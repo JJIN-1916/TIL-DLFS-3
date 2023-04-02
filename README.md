@@ -1,6 +1,6 @@
 ## Deep-Learning-from-Scratch-3
 
-<details open>
+<details>
 <summary>step01</summary>
 
 1.1 변수란 
