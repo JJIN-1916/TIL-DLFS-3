@@ -64,7 +64,7 @@
     - 물체의 시간에 따른 위치 변화율(위치의 미분)은 속도
     - 시간에 대한 속도 변화율(속도의 미분)은 가속도 
 - 정의는 '극한으로 가는 짧은 시간(순간)'에서의 변화량 
-$$f'(x)=\displaystyle\lim_{h\rarr 0}{\frac{f(x+h)-f(x)}{h}}$$
+$$f'(x)=\displaystyle\lim_{h{\rarr}0}{\frac{f(x+h)-f(x)}{h}}$$
 - $y=f(x)$가 어떤 구간에서 미분이 가능하다면 $f'(x)$ 도 함수이며, $f(x)$의 도함수라고 함
 
 4.2 수치 미분 구현
@@ -92,7 +92,7 @@ $$f'(x)=\displaystyle\lim_{h\rarr 0}{\frac{f(x+h)-f(x)}{h}}$$
 <details>
 <summary>step05<summary>
 
-## 5.1 연쇄 법칙
+5.1 연쇄 법칙
 - 역전파(backpropagation, 오차역전파법)를 이해하는 열쇠는 **연쇄 법칙**(chain rule)
 - 연쇄 법칙에 따르면 합성 함수(여러함수가 연결된 함수)의 미분은 구성 함수 각각을 미분한 후 곱한 것과 같다고 함
 - $a = A(x)$, $b = B(a)$, $y = C(b)$ $\Rightarrow$ $y = C(B(A(x)))$
@@ -100,12 +100,12 @@ $$\frac{dy}{dx} = \frac{dy}{db}\frac{db}{da}\frac{da}{dx}$$
 $$\frac{dy}{dx} = \frac{dy}{dy}\frac{dy}{db}\frac{db}{da}\frac{da}{dx}$$
 - $\frac{dy}{dy}$는 1
 
-## 5.2 역전파 원리 도출
+5.2 역전파 원리 도출
 - 출력에서 입력 방향으로(즉, 역방향으로) 순서대로 계산
 $$\frac{dy}{dx} = ((\frac{dy}{dy}\frac{dy}{db})\frac{db}{da})\frac{da}{dx}$$
 - 미분값이 오른쪽에서 왼쪽으로 전파되는 것을 알 수 있음, 역전파 
 
-## 5.3
+5.3 계산 그래프로 살펴보기
 - 순전파
 $$x \rightarrow _A_ \rightarrow a \rightarrow _B_ \rightarrow b \rightarrow _C_ \rightarrow y$$
 - 역전파
