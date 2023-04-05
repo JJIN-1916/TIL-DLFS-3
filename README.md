@@ -64,7 +64,7 @@
     - 물체의 시간에 따른 위치 변화율(위치의 미분)은 속도
     - 시간에 대한 속도 변화율(속도의 미분)은 가속도 
 - 정의는 '극한으로 가는 짧은 시간(순간)'에서의 변화량 
-$$f'(x)=\displaystyle\lim_{h\rarr0}{\frac{f(x+h)-f(x)}{h}}$$
+$$f'(x)=\displaystyle\lim_{h\rarr 0}{\frac{f(x+h)-f(x)}{h}}$$
 - $y=f(x)$가 어떤 구간에서 미분이 가능하다면 $f'(x)$ 도 함수이며, $f(x)$의 도함수라고 함
 
 4.2 수치 미분 구현
@@ -86,3 +86,30 @@ $$f'(x)=\displaystyle\lim_{h\rarr0}{\frac{f(x+h)-f(x)}{h}}$$
 - 신경망에서는 매개변수를 수백만 개 이상 사용하는 것은 일도 아님, 그래서 등장한 것이 **역전파**
 - 수치 미분은 구현이 쉽고 거의 정확한 값을 얻을 수 있음, 이에 비해 역전파는 복잡한 알고리즘이라서 버그가 섞여 들어가기 쉬움
 - 정확히 구현했는지 확인을 위해 수치미분 결과를 이용, 이를 **기울기 확인**(gradient checking)
+
+</details>
+
+<details>
+<summary>step05<summary>
+
+## 5.1 연쇄 법칙
+- 역전파(backpropagation, 오차역전파법)를 이해하는 열쇠는 **연쇄 법칙**(chain rule)
+- 연쇄 법칙에 따르면 합성 함수(여러함수가 연결된 함수)의 미분은 구성 함수 각각을 미분한 후 곱한 것과 같다고 함
+- $a = A(x)$, $b = B(a)$, $y = C(b)$ $\Rightarrow$ $y = C(B(A(x)))$
+$$\frac{dy}{dx} = \frac{dy}{db}\frac{db}{da}\frac{da}{dx}$$
+$$\frac{dy}{dx} = \frac{dy}{dy}\frac{dy}{db}\frac{db}{da}\frac{da}{dx}$$
+- $\frac{dy}{dy}$는 1
+
+## 5.2 역전파 원리 도출
+- 출력에서 입력 방향으로(즉, 역방향으로) 순서대로 계산
+$$\frac{dy}{dx} = ((\frac{dy}{dy}\frac{dy}{db})\frac{db}{da})\frac{da}{dx}$$
+- 미분값이 오른쪽에서 왼쪽으로 전파되는 것을 알 수 있음, 역전파 
+
+## 5.3
+- 순전파
+$$x \rightarrow _A_ \rightarrow a \rightarrow _B_ \rightarrow b \rightarrow _C_ \rightarrow y$$
+- 역전파
+$$\frac{dy}{dx} \leftarrow A'(x) \leftarrow \frac{dy}{da} \leftarrow B'(a) \leftarrow \frac{dy}{db} \leftarrow C'(b) \leftarrow \frac{dy}{dy}$$
+- 위의 식을 잘 보면 역전파 시에는 순전파 시 이용한 데이터가 필요하다는 것을 알 수 있음 
+- 따라서, 역전파를 구하려면 먼저 순전파를 하고 각 합수의 입력변수(x, a, b)의 값을 꼭 기억해둬야함 
+</details>
