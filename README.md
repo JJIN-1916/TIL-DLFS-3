@@ -141,10 +141,44 @@ $$\frac{dy}{dx} \leftarrow A'(x) \leftarrow \frac{dy}{da} \leftarrow B'(a) \left
 
 ## 6.4 역전파 구현
 - 역전파는 $\frac{dy}{dy}=1$ 에서 시작, 출력 y의 미분값을 np.array(1.0)
-
-
-
 ---
 
 </details>
 
+<details>
+<summary>step07</summary>
+
+---
+## 7.1 역전파 자동화의 시작
+- 역전파 자동화는 변수와 함수의 '관계'를 이해하는 데서 출발
+- 함수의 입장에서 변수는 입력 변수(input)와 출력 변수(output)
+- 변수의 입장에서 함수는 창조자(creator), 함수에 의해 변수가 만들어짐
+- 동적 계산 그래프는 실제 계산이 이루어질 때 변수에 관련 '연결'을 기록하는 방식으로 만들어짐
+- Define-by-Run : 데이터를 흘려보냄으로써(Run 함으로써) 연결이 규정된다(Define 된다)는 뜻
+- $x \longrightarrow A \longrightarrow a \longrightarrow B \longrightarrow b \longrightarrow C \longrightarrow y$
+- $x\xleftarrow{\text{input}}A\xleftarrow{\text{creator}}a\xleftarrow{\text{input}}B\xleftarrow{\text{creator}}b\xleftarrow{\text{input}}C\xleftarrow{\text{creator}}y$
+
+## 7.2 역전파 도전!
+```python
+y.grad = np.array(1.0)
+
+C = y.creator # 1. 함수를 가져온다.
+b = C.input # 2. 함수의 입력을 가져온다.
+b.grad = C.backward(y.grad) # 3. 함수의 backword 메서드를 호출한다.
+```
+```python
+B = b.creator # 1. 함수를 가져온다.
+a = B.input # 2. 함수의 입력을 가져온다.
+a.grad = B.backward(b.grad) # 3. 함수의 backword 메서드를 호출한다.
+```
+```python
+A = a.creator # 1. 함수를 가져온다.
+x = A.input # 2. 함수의 입력을 가져온다.
+x.grad = A.backward(a.grad) # 3. 함수의 backword 메서드를 호출한다.
+```
+
+## 7.3 backward 메서드 추가
+
+---
+
+</details>
