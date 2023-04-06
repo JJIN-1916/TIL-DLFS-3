@@ -71,7 +71,7 @@
     - 물체의 시간에 따른 위치 변화율(위치의 미분)은 속도
     - 시간에 대한 속도 변화율(속도의 미분)은 가속도 
 - 정의는 '극한으로 가는 짧은 시간(순간)'에서의 변화량 
-$$f'(x)=\displaystyle\lim_{h{\rarr}0}{\frac{f(x+h)-f(x)}{h}}$$
+$$f'(x)=\displaystyle\lim_{h{\rightarrow}0}{\frac{f(x+h)-f(x)}{h}}$$
 - $y=f(x)$가 어떤 구간에서 미분이 가능하다면 $f'(x)$ 도 함수이며, $f(x)$의 도함수라고 함
 
 ## 4.2 수치 미분 구현
@@ -124,3 +124,27 @@ $$\frac{dy}{dx} \leftarrow A'(x) \leftarrow \frac{dy}{da} \leftarrow B'(a) \left
 ---
 
 </details>
+
+<details>
+<summary>step06</summary>
+
+---
+## 6.1 Variable 클래스 추가 구현
+- 미분값도 저장하도록 확장
+
+## 6.2 Function 클래스 추가 구현
+- 미분을 계산하는 역전파(backward 메서드) 추가
+- forward 메서드 호출 시 건네받은 Variable 인스턴스 유지 추가
+
+## 6.3 Square 과 Exp 클래스 추가 구현
+- $y=x^2$, $y=e^x$ 의 각 미분값을 곱해주는 함수 추가
+
+## 6.4 역전파 구현
+- 역전파는 $\frac{dy}{dy}=1$ 에서 시작, 출력 y의 미분값을 np.array(1.0)
+
+
+
+---
+
+</details>
+
