@@ -178,6 +178,27 @@ x.grad = A.backward(a.grad) # 3. 함수의 backword 메서드를 호출한다.
 ```
 
 ## 7.3 backward 메서드 추가
+(step07.py)
+
+---
+
+</details>
+
+<details>
+<summary>step08</summary>
+
+---
+
+## 8.1 현재의 Variable 클래스
+- 현재 backward 함수는 이전의 backward를 호출하는 함수
+- self.creator 가 None인 변수를 찾을 때까지 backward에서 backward를 호출하고 또 호출하고... 계속 반복 $\rightarrow$ 재귀 구조
+
+## 8.2 반복문을 이용한 구현
+(step08.py)
+
+## 8.3 동작 확인
+- 재귀보다 반복문이 더 효율적인 이유? 
+    - 재귀는 함수를 재귀적으로 호출할 떄 마다 중간 결과를 메모리에 유지하면서(스택을 쌓으면서) 처리를 이어감. 그러나 요즘 컴퓨터의 메모리가 넉넉한 편이여서 큰 문제가 되지 않음.
 
 ---
 

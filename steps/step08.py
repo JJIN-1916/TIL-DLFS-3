@@ -11,12 +11,22 @@ class Variable:
          self.creator = func
 
     def backward(self):
-         f = self.creator
-         if f is not None:
-            x = f.input
-            x.grad = f.backward(self.grad)
-            x.backward()
-      
+      # 재귀를 사용한 구현
+      #    f = self.creator
+      #    if f is not None:
+      #       x = f.input
+      #       x.grad = f.backward(self.grad)
+      #       x.backward()
+      # 반복문을 사용한 구현
+      funcs = [self.creator]
+      while funcs:
+           f = funcs.pop() # 함수를 가져온다
+           x, y = f.input, f.output # 함수의 입력과 출력을 가져온다.
+           x.grad = f.backward(y.grad) # backward 메서드를 호출한다.
+
+           if x.creator is not None:
+                funcs.append(x.creator) # 하나 앞의 함수를 리스트에 추가한다.
+
 
 class Function:
     def __call__(self, input):
@@ -73,13 +83,7 @@ a = A(x)
 b = B(a)
 y = C(b)
 
-assert y.creator == C
-assert y.creator.input == b
-assert y.creator.input.creator == B
-assert y.creator.input.creator.input == a
-assert y.creator.input.creator.input.creator == A
-assert y.creator.input.creator.input.creator.input == x
-
+# 역전파
 y.grad = np.array(1.0)
 y.backward()
 print(x.grad)
