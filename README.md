@@ -203,3 +203,45 @@ x.grad = A.backward(a.grad) # 3. 함수의 backword 메서드를 호출한다.
 ---
 
 </details>
+
+<details>
+
+<summary>step09</summary>
+
+---
+## 9.1 파이썬 함수로 이용하기 
+- 기존 방식의  불편한 점 : Square 클래스의 인스턴스 생성 후 호출 
+    - 해결방법 : 파이썬 함수 (step09.py)
+```
+x = Variable(np.array(0.5))
+f = Square()
+y = f(x)
+```
+
+## 9.2 backward 메서드 간소화
+- 역전파할 때마다 작성했던 `y.grad = np.array(1.0)` 생략
+    - 해결방법 : `np.ones_like()` ( + data, grad 데이터 타입을 같게 하기 위함)
+
+## 9.3 ndarray 만 취급하기
+- float, int 타입을 사용하지 않도록 하기 위한 처리
+- numpy 의 독특한 관례?!
+```
+# 예상한 결과
+x = np.array([1.0])
+y = x ** 2
+print(type(x), x.ndim) -> <class 'numpy.ndarray'> 1
+print(type(y))         -> <class 'numpy.ndarray'>
+```
+
+```
+# 문제의 결과 : 출력이 float이 나와버림 (오호...)
+x = np.array(1.0)
+y = x ** 2
+print(type(x), x.ndim) -> <class 'numpy.ndarray'> 0
+print(type(y))         -> <class 'numpy.float64'>
+```
+- 스칼라 값을 걸러내기 위해서 $\rightarrow$ `np.isscalar()`
+
+---
+
+</details>
