@@ -245,3 +245,44 @@ print(type(y))         -> <class 'numpy.float64'>
 ---
 
 </details>
+
+<details >
+
+<summary>step10</summary>
+
+---
+## 10.1 파이썬 단위 테스트
+- 파이썬 테스트 때는 표준 라이브러리에 unittest 를 사용하면 편함
+- unittest.TestCase를 상속한 SquareTest 클래스 구현
+- 기억할 규칙
+    - 테스트할 때는 test로 시작하는 메서드를 만들고 그 안에 테스트할 내용을 적음
+    - 출력과 기대값이 같은지 확인
+
+```
+$ python -m unittest steps/step10.py
+``` 
+- `-m unittest` 인수를 제공하면 테스트 모드로 실행 가능
+- OR python 파일에 `unittest.main()` 추가
+
+## 10.2 square 함수의 역전파 테스트
+- (step10.py)
+
+## 10.3 기울기 확인을 이용한 자동 테스트
+- 미분의 기댓값을 손으로 입력했으나 이부분은 자동화할 방법이 있다 : 기울기 확인
+    - 기울기 확인 : 수치 미분으로 구한 결과와 역전파로 구한 결과를 비교 
+- `np.allclose(a, b, rtol=1e-05, atol=1e-08)` : a, b 값이 가까운지 판정, `|a - b| <= (atol + rtol * |b|)` 조건을 만족하면 True
+
+## 10.4 테스트 정리 
+- 테스트 파일들은 하나의 장소에 모아 관리하는 것이 일반적
+```
+$ python -m unittest discover tests
+```
+- discover 하위 명령을 사용하면 지정한 디렉터리에서 테스트 파일이 있는지 검색하고 발견한 모든 파일을 실행함
+- 기본적으로 지정한 디렉터리에서 이름이 test*.py 형태인 파일을 테스트 파일로 인식함(변경할 수 있음)
+- DeZero의 깃허브는 트래비스 CI 라는 지속적 통합(CI) 서비스를 연계해둠
+    - push -> pull request 병합 -> 매시간 자동으로 테스트 실행 되도록 설정
+    - 배지까지 표기하면 소스 코드의 신뢰성을 줄 수 있음
+
+---
+
+</details>
