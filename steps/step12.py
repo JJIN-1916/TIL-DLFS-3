@@ -32,21 +32,19 @@ class Variable:
 
 
 class Function:
-    def __call__(self, inputs):
-        # x = input.data # Variable 이라는 '상자'에서 실제 데이터를 꺼낸 다음
+    def __call__(self, *inputs):
         xs = [x.data for x in inputs]
-        # y = self.forward(x) # forward 메서드에서 구체적인 계산을 함
-        ys = self.forward(xs)
-        # output = Variable(as_array(y)) # 계산 결과를 Variable에 넣고
+        ys = self.forward(*xs) # 별표를 붙여 언팩
+        if not isinstance(ys, tuple): # 튜플이 아닌 경우 추가 지원
+          ys = (ys,)
         outputs = [Variable(as_array(y)) for y in ys]
-        # output.set_creator(self) # 자신이 창조자라고 원산지 표시를 함
         for output in outputs:
              output.set_creator(self)
         
         self.inputs = inputs 
         self.outputs = outputs 
-        return outputs
-    
+        return outputs if len(outputs) > 1 else outputs[0]
+     
     def forward(self, x):
           raise NotImplementedError()
     
@@ -55,10 +53,9 @@ class Function:
     
 
 class Add(Function):
-     def forward(self, xs):
-          x0, x1 = xs
+     def forward(self, x0, x1):
           y = x0 + x1
-          return (y,)
+          return y
 
 
 class Square(Function):
@@ -85,6 +82,10 @@ def as_array(x):
      if np.isscalar(x):
           return np.array(x)
      return x
+
+
+def add(x0, x1):
+     return Add()(x0, x1)
 
 
 def square(x):
@@ -126,13 +127,9 @@ class SquareTest(unittest.TestCase):
           self.assertTrue(flg)
 
 
-xs = [Variable(np.array(2)), Variable(np.array(3))] # 리스트로 준비
-f = Add()
-ys = f(xs)
-print('ys:', ys)
-
-# error 발생 -> 46, 47 줄의 input, output을 수정하지 않았기 때문
-y = ys[0] 
+x0 = Variable(np.array(2)) 
+x1 = Variable(np.array(3))
+y = add(x0, x1)
 print(y.data)
 
 # unittest.main()
