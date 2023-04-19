@@ -319,3 +319,21 @@ $ python -m unittest discover tests
 ---
 
 </details>
+
+<details>
+<summary>step13</summary>
+
+---
+## 13.1 가변 길이 인수에 대응한 Add 클래스의 역전파
+- 덧셈의 역전파는 출력쪽에서 전해지는 미분값에 1을 곱한값, 상류에서 흘러오는 미분값을 그대로 흘려보내는 것 
+
+## 13.2 Variable 클래스 수정
+- (step13.py)
+
+## 13.3 Square 클래스 구현
+- (step13.py)
+- 단수형인 input에서 복수형인 inputs로 받을 수 있게 수정
+
+---
+
+</details>
