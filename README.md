@@ -337,3 +337,32 @@ $ python -m unittest discover tests
 ---
 
 </details>
+
+<details>
+<summary>step14</summary>
+
+---
+## 14.1 문제의 원인
+```
+x = Variable(np.array(3.0))
+y = add(x, x)
+print('y', y.data)
+
+y.backward()
+print('x.grad', x.grad)
+
+>>> y 6.0
+>>> x.grad 1
+```
+- 왜 미분값이 틀렸을까...? 
+    - -> 출력쪽에서 전해지는 미분값을 그래도 대입하여 같은 변수를 반복해서 사용할 경우 전파되는 미분값이 덮어쓰여지는 것!!
+
+## 14.2 해결책
+- (step14.py)
+
+## 14.3 미분값 재설정
+- (step14.py)
+
+---
+
+</details>
