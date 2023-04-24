@@ -366,3 +366,59 @@ print('x.grad', x.grad)
 ---
 
 </details>
+
+<details>
+<summary>step15 : 복잡한 계산 그래프(이론 편)</summary>
+
+---
+## 15.1 역전파의 올바른 순서
+- 같은 변수를 반복해서 사용하거나 여러 변수를 입력받는 함수를 사용하는 계산도 할 수 있어야함
+- 현재 복잡한 연결의 역전파는 불가능
+- 이를 구현하기 위해 비교적 간단한 그래프에서 시작하려고 함
+
+## 15.2 현재의 DeZero
+- 아래의 코드를 보면 처리할 함수는 리스트의 끝에 추가하고 끝에서 꺼낸다
+```
+class Variable:
+...
+    def backward(self):
+        ...
+        while funcs:
+            f = funcs.pop()
+            ...
+            for x, gx in zip(f.input, gxs):
+                ...
+                funcs.append(x.creator)
+
+```
+- 그동안 다뤘던 함수는 항상 하나의 함수를 꺼냈기 때문에 순서를 고려하지 않음
+
+## 15.3 함수 우선순위
+- funcs 리스트에 있는 함수 중 출력 쪽에 더 가까운 함수를 꺼낼 수 있어야함
+- 변수-함수 를 하나의 세대로 묶어서 입력쪽에 있을 수록 0세대, 출력쪽에 있을 수록 4세대로 먼저 계산해야할 함수를 알 수 있다
+
+---
+
+</details>
+
+<details>
+<summary>step16 : 복잡한 계산 그래프(구현 편)</summary>
+
+---
+## 16.1 세대 추가
+- Variable, Function 클래스에 변수 generation 추가 (step16.py)
+
+## 16.2 세대 순으로 꺼내기 
+- sort 메서드를 통해서 generation을 오름차순으로 정렬
+
+## 16.3 Variable 클래스의 backward
+- 중첩 합수 : 메서드 안에 메서드 
+    - 감싸는 메서드 안에서만 사용한다
+    - 감싸는 메서드에 정의된 변수를 사용해야 한다
+
+## 16.4 동작 확인
+- (step16.py)
+
+---
+
+</details>
