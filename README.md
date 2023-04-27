@@ -510,7 +510,7 @@ a = b = c = None
 
 </details>
 
-<details open>
+<details>
 
 <summary>step19 : 변수 사용성 개선</summary>
 
@@ -525,6 +525,22 @@ a = b = c = None
 
 ## 19.3 len 함수와 print 함수
 - (step19.py)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step20 : 연산자 오버로드(1)</summary>
+
+---
+## 20.1 Mul 클래스 구현
+- (step20.py)
+
+## 20.2 연산자 오버로드
+- 곱셈 연산자 *를 오버로드 -> `__mul__(self, other)`
+- (step20.py)
 
 ---
 
