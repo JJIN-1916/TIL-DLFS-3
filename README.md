@@ -509,3 +509,23 @@ a = b = c = None
 ---
 
 </details>
+
+<details open>
+
+<summary>step19 : 변수 사용성 개선</summary>
+
+---
+## 19.1 변수 이름 지정
+- 많은 변수를 처리할 것이기에 이름을 붙이기로 함 
+- 이후 시각화때도 사용할 수 있음
+
+## 19.2 ndarray 인스턴스 변수
+- Variable은 데이터를 담는 '상자' -> 중요한 것은 상자가 아니라 그 안의 '데이터'
+- ndarray 의 인스턴스 변수를 사용할 수 있도로고 확장 -> `@property`
+
+## 19.3 len 함수와 print 함수
+- (step19.py)
+
+---
+
+</details>
