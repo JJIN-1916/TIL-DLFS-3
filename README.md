@@ -530,7 +530,7 @@ a = b = c = None
 
 </details>
 
-<details open>
+<details>
 
 <summary>step20 : 연산자 오버로드(1)</summary>
 
@@ -541,6 +541,31 @@ a = b = c = None
 ## 20.2 연산자 오버로드
 - 곱셈 연산자 *를 오버로드 -> `__mul__(self, other)`
 - (step20.py)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step21 : 연산자 오버로드(2)</summary>
+
+---
+## 21.1 ndarray와 함께 사용하기
+- `a * np.array(2.0)` 가능하게 하기 위해 as_variable 함수 준비 
+
+## 21.2 float, int와 함께 사용하기
+- (step21.py)
+
+## 21.3 문제점 1 : 첫 번째 인수가 float나 int인 경우
+- `2.0 * x` 가능하려면 -> `__rmul__(self, other)` 필요함
+- (step21.py)
+
+## 21.4 문제점 2 : 좌항이 ndarray 인스턴스인 경우 
+- `ndarray + Variable` -> ndarray의 `__add__` 메서드가 호출됨
+- 연산자 우선순위를 정해야함 -> `__array_priority__`
+    - 우선순위를 정하지 않을 경우 -> `[varivale([3.])]`
+    - 우선순위를 정했을 경우 -> `varivale([3.])`
 
 ---
 
