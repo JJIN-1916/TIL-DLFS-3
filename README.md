@@ -596,7 +596,7 @@ a = b = c = None
 
 </details>
 
-<details open>
+<details>
 
 <summary>step23 : 패키지로 정리</summary>
 
@@ -633,6 +633,95 @@ a = b = c = None
 - (step23.py)
 - `if '__file__' in globals():` -> __file__ 이라는 전역변수가 정의되어 있는지 확인
     - (참고) `__file__` 변수는 파이썬 인터프리터의 인터랙티브 모드와 구글 콜랩에서 실행하는 경우 정의되어있지 않음
+
+---
+
+</details>
+
+<details open>
+
+<summary>step24 : 복잡한 함수의 미분</summary>
+
+---
+## 24.1 Sphere 함수
+- $z=x^2 + y^2$
+
+## 24.2 matyas 함수
+- $z= 0.26(x^2 + y^2) - 0.48xy$
+
+## 24.3 Goldstein-Price 함수
+$$\begin{aligned}
+f(x, y)=&\ [1+(x+y+1)^2(19-14x+3x^2-14y+6xy+3y^2)]\\
+&\ [30+(2x-3y)^2(18-32x+12x^2+48y-36xy+27y^2)]
+\end{aligned}$$ 
+
+## [칼럼] Define-by-Run
+- 딥러닝 프레임워크는 동작 방식에 따라 크게 두 가지로 나뉨
+    1. 정적 계산 그래프, Define-and-Run
+    2. 동적 계산 그래프, Define-by-Run
+### 1. Define-and-Run(정적 계산 그래프 방식)
+- 직역하면 '계산 그래프를 정의한 다음 데이터를 흘려보낸다'
+- 계산 그래프 정의는 사용가자 제공하고, 프레임워크는 주어진 그래프를 컴퓨터가 처리할 수 있는 형태로 변환(컴파일)하여 데이터를 흘려보내는 식
+```
+# 가상의 Define-and-Run 방식 프레임워크용 코드 예
+
+# 계산 그래프 정의
+a = Variable('a')
+b = Variable('b')
+c = a * b
+d = c + Constant(1)
+
+# 계산 그래프 컴파일
+f = compile(d)
+
+# 데이터 흘려보내기
+d = f(a=np.array(2), b=np.array(3))
+```
+- 위 정의한 계싼 그래프 4줄의 코드는 실제 계산이 이루어지지 않음, 실제 '수치'가 아닌 기호를 대상으로 프로그래밍 됐음 -> 기호프로그래밍
+- 추상적인 계산 절차를 코딩해야함
+- 도메인 특화 언어(Domain-Specific-Language, DSL) 사용
+    - 프레임워크 자체의 규칙들로 이루어진 언어 
+    - 예. 상수는 Constant에 담아라 라는 규칙, 조건에 따라 분기하고 싶다면 if문 \
+    (텐서플로에서는 if문의 역할로 tf.cond 연산을 사용)
+    ```python
+    import tensorflow as tf
+
+    flg = tf.placeholder(dtype=tf.bool)
+    x0 = tf.placeholder(dtype=tf.float32)
+    x1 = tf.placeholder(dtype=tf.float32)
+    y = tf.cond(flg, lambda: x0+x1, lambda: x0*x1) # if문 역할
+    ```
+    - 딥러닝 여명기에는 Define-and-Run 방식 프레임워크가 대부분
+    - 대표적으로 텐서플로, 카페, CNTK (텐서플로 2.0부터는 Define-by-Run 방식도 도입)
+    - 다음 세대로 등장한 것이 DeZero에도 채용할 Define-by-Run
+
+### 2. Define-by-Run(동적 계산 그래프 방식)
+- '데이터를 흘려보냄으로써 계산 그래프가 정의된다' 
+- '데이터 흘려보내기'와 '게산 그래프 구축' 동시에 이루어지는 것이 특징
+- DeZero의 경우 사용자가 데이터를 흘려보낼 때 자동으로 계산 그래프를 구성하는 '연결(참조)'를 만듬 \
+이 연결이 DeZero의 계산 그래프에 해당함 \
+구현 수준에서는 연결리스트로 표현되는데 이를 사용하면 계산이 끝난 후 역방향으로 추적할 수 있음
+- Define-by-Run 방식 프레임워크는 넘파이를 사용하는 일반적인 프로그래밍과 같은 형태로 코딩이 가능함
+```python
+import numpy as np
+from dezero import Variable
+
+a = Variable(np.ones(10))
+b = Variable(np.ones(10)*2)
+c = b * a
+d = c + 1
+print(d)
+```
+- 2015년 체이너에 의해 처음 제창되고 이후 많은 프레임워크에 채용되고 있음
+- 대표적으로 파이토치, MXNet, DyNet, 텐서플로(2.0 이상에서는 기본값)
+
+### 정적/동적 계산 그래프 방식 장점
+||Define-and-Run(정적 계산 그래프)|Define-by-Run(동적 계산 그래프)|
+|:--:|:--|:--|
+|장점|- 성능이 좋다 <br> - 신경망 구조를 최적화하기 쉽다 <br> - 분산 학습 시 더 편리하다|- 파이썬으로 계산 그래프를 제어할 수 있다 <br> - 디버깅이 쉽다 <br> - 동적인 계산 처리에 알맞다 |
+|단점|- 독자적인 언어(규칙)을 익혀야한다 <br> - 동적 계산 그래프를 만들기 어렵다 <br> - 디버깅하기 매우 어려울 수 있다| - 성능이 낮을 수 있다|
+- 성능이 중요할 떄는 Define-and-Run
+- 사용성이 중요할 떄는 Define-by-Run
 
 ---
 
