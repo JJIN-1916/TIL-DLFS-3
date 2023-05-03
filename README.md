@@ -571,7 +571,7 @@ a = b = c = None
 
 </details>
 
-<details open>
+<details>
 
 <summary>step22 : 연산자 오버로드(3)</summary>
 
@@ -589,8 +589,50 @@ a = b = c = None
 ## 22.3 나눗셈
 - (step22.py)
 
-## 21.4 거듭제곱
+## 22.4 거듭제곱
 - (step22.py)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step23 : 패키지로 정리</summary>
+
+---
+## 23.1 파일 구성
+- dezero 라는 공통의 디렉터리를 만듬 -> 패키지
+```
+# 최종 파일 구성
+.
+├── dezero
+│   ├── __init__.py
+│   ├── core_simple.py
+│   ├── ...
+│   └── utils.py
+│
+├── steps
+│   ├── step01.py
+│   ├── step02.py
+│   ├── ...
+│   └── step60.py
+│
+```
+
+## 23.2 코어 클래스 옮기기
+- steps/step22.py -> dezero/core_simple.py
+
+## 23.3 연산자 오버로드
+- (dezero/core_simple.py, dezero/__init__.py)
+
+## 23.4 실제 __init__.py 파일
+- (dezero/__init__.py)
+
+## 23.5 dezero 임포트하기
+- (step23.py)
+- `if '__file__' in globals():` -> __file__ 이라는 전역변수가 정의되어 있는지 확인
+    - (참고) `__file__` 변수는 파이썬 인터프리터의 인터랙티브 모드와 구글 콜랩에서 실행하는 경우 정의되어있지 않음
 
 ---
 
