@@ -638,7 +638,7 @@ a = b = c = None
 
 </details>
 
-<details open>
+<details>
 
 <summary>step24 : 복잡한 함수의 미분</summary>
 
@@ -654,7 +654,8 @@ $$
 \begin{aligned}
 f(x, y)=&\ [1+(x+y+1)^2(19-14x+3x^2-14y+6xy+3y^2)]\\
 &\ [30+(2x-3y)^2(18-32x+12x^2+48y-36xy+27y^2)]
-\end{aligned}$$ 
+\end{aligned}
+$$ 
 
 ## [칼럼] Define-by-Run
 - 딥러닝 프레임워크는 동작 방식에 따라 크게 두 가지로 나뉨
@@ -724,6 +725,40 @@ print(d)
 - 성능이 중요할 떄는 Define-and-Run
 - 사용성이 중요할 떄는 Define-by-Run
 
+---
+
+</details>
+
+<details open>
+
+<summary>step 25 : 계산 그래프 시각화(1)</summary>
+
+---
+## 25.1 Graphviz 설치하기
+- Graphviz 그래프를 시각화 해주는 도구(계산 그래프와 같이 노드와 화살표로 이뤄진 데이터 구조)
+    ```
+    $ brew install graphviz
+    ```
+- dot 명령
+    ```
+    $ dot sample.dot -T png -o sample.png
+    ```
+    - -o 파일 이름 
+    - -T 출력 파일의 형식을 지정 
+
+## 25.2 DOT 언어로 그래프 작성하기
+- (dot/sample_1.dot, dot/sample_1.png)
+
+## 25.3 노드에 속성 지정하기 
+- 노드의 '색'과 '모양'을 지정할 수 있음
+- 각 줄의 '1', '2' 는 노드의 ID를 나타냄, 0 이상의 정수이며 중복되면 안됨
+- 해당 ID에 부여할 속성을 대괄호 []안에 적음
+- (dot/sample_2.dot, dot/sample_2.png)
+- (dot/sample_3.dot, dot/sample_3.png)
+
+## 25.4 노드 연결하기
+- ID를 '->' 로 연결하면 됨
+- (dot/sample_4.dot, dot/sample_4.png)
 ---
 
 </details>
