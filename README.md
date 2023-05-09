@@ -729,7 +729,7 @@ print(d)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 25 : 계산 그래프 시각화(1)</summary>
 
@@ -759,6 +759,24 @@ print(d)
 ## 25.4 노드 연결하기
 - ID를 '->' 로 연결하면 됨
 - (dot/sample_4.dot, dot/sample_4.png)
+---
+
+</details>
+
+<details open>
+
+<summary>step 26 : 계산 그래프 시각화(2)</summary>
+
+---
+## 26.1 시각화 코드 예
+- 계산 그래프를 시각화하는 함수 `get_dot_graph` 라는 이름으로 `dezero/utils.py` 에 구현
+- (`get_dot_graph` 구현 후 예시를 코드로 보여줌)
+
+## 26.2 계산 그래프에서 DOT 언어로 변환하기
+- (dezero/utils.py)
+
+## 26.3 이미지 변환까지 한번에
+- (dezero/utils.py)
 ---
 
 </details>
