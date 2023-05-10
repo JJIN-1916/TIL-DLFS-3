@@ -763,7 +763,7 @@ print(d)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 26 : 계산 그래프 시각화(2)</summary>
 
@@ -777,6 +777,34 @@ print(d)
 
 ## 26.3 이미지 변환까지 한번에
 - (dezero/utils.py)
+---
+
+</details>
+
+<details open>
+
+<summary>step 27 : 테일러 급수 미분</summary>
+
+---
+## 27.1 sin 함수 구현
+- $y=\sin(x)$ 일 때 그 미분은 $\frac{\partial{y}}{\partial{x}}=\cos(x)$
+- (steps/step27.py)
+
+## 27.2 테일러 급수 이론
+- 테일러 급수란 어떤 함수를 다항식으로 근사하는 방법
+- 점 a 에서 f(x)의 테일러 급수. a는 임의의 값, $f'$는 1차 미분, $f''$는 2차 미분, $f'''$는 3차 미분을 뜻함. !기호는 계승(factorial)을 뜻하며 5! = 5 x 4 x 3 x 2 x 1 =120 
+    $$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdots$$
+- a = 0일 떄의 테일러 급수를 매클로린 전개(Maclaurin's series)라고도 함
+    $$f(x)=f(0)+f'(0)x+\frac{1}{2!}f''(0)x^2+\frac{1}{3!}f'''(0)x^3+\cdots$$
+- $f(x)=\sin(x)$를 적용해보자
+    $$\sin(x)=\frac{x}{1!}-\frac{x^3}{3!}+\frac{x^5}{5!}-\cdots = \displaystyle\sum_{i=0}^{\infin}{\frac{x^{2i+1}}{(2i+1)!}}$$
+
+## 27.3 테일러 급수 구현
+- (steps/step27.py)
+
+## 27.4 계산 그래프 시각화
+- (steps/step27.py)
+
 ---
 
 </details>
