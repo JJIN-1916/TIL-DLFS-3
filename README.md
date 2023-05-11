@@ -781,7 +781,7 @@ print(d)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 27 : 테일러 급수 미분</summary>
 
@@ -804,6 +804,27 @@ print(d)
 
 ## 27.4 계산 그래프 시각화
 - (steps/step27.py)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 28 : 함수 최적화</summary>
+
+---
+## 28.1 로젠브록 함수
+- 최적화란 어떤 함수가 주어졌을 때 그 최솟값(또는 최댓값)을 반환하는 '입력(함수의 인수)'을 찾는 일
+- 로젠브록 함수(Rosenbrock function)
+    $$y=100(x_1-x_0^2)^2+(1-x_0)^2$$
+- 답부터 이야기하면 최솟값이 되는 지점은 $(x_0, x_1)=(1, 1)$ 
+
+## 28.2 미분 계산하기
+- $(x_0, x_1)=(0.0, 2.0)$ 에서의 미분을 구해보자
+
+## 28.3 경사하강법 구현
+- (steps/step28.py)
 
 ---
 
