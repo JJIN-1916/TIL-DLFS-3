@@ -797,7 +797,7 @@ print(d)
 - a = 0일 떄의 테일러 급수를 매클로린 전개(Maclaurin's series)라고도 함
     $$f(x)=f(0)+f'(0)x+\frac{1}{2!}f''(0)x^2+\frac{1}{3!}f'''(0)x^3+\cdots$$
 - $f(x)=\sin(x)$를 적용해보자
-    $$\sin(x)=\frac{x}{1!}-\frac{x^3}{3!}+\frac{x^5}{5!}-\cdots = \displaystyle\sum_{i=0}^{\infin}{\frac{x^{2i+1}}{(2i+1)!}}$$
+    $$\sin(x)=\frac{x}{1!}-\frac{x^3}{3!}+\frac{x^5}{5!}-\cdots = \displaystyle\sum_{i=0}^{\infty}{\frac{x^{2i+1}}{(2i+1)!}}$$
 
 ## 27.3 테일러 급수 구현
 - (steps/step27.py)
@@ -809,7 +809,7 @@ print(d)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 28 : 함수 최적화</summary>
 
@@ -825,6 +825,41 @@ print(d)
 
 ## 28.3 경사하강법 구현
 - (steps/step28.py)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 29 : 뉴턴 방법으로 푸는 최적화(수동 계산)</summary>
+
+---
+## 29.1 뉴턴 방법을 활용한 최적화 이론
+
+$$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdots$$
+- 위의 테일러 급수는 1차 미분, 2차 미분, ... 형태로 증가하는데 이를 어느 시점에 중단하면 아래와 같이 $f(x)$를 근사적으로 나타낼 수 있음
+    $$f(x)\simeq f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2$$
+- 근사한 2차 함수는 $y = f(x)$ 에 접하는 곡선으로 2차 함수의 최솟값은 미분 결과가 0인 위치를 확인 하면 됨
+    $$
+    \begin{aligned}
+    \frac{d}{dx}(f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2)& = 0\\
+    f'(a) + f''(a)(x-a)& = 0\\
+    x& = a - \frac{f'(a)}{f''(a)}
+    \end{aligned}
+    $$
+- 경사하강법 $x \leftarrow x - \alpha f'(x)$ : 스칼라 값인 $\alpha$를 통해 갱신
+- 뉴턴 방법 $x \leftarrow - \frac{f'(x)}{f''(x)}$ : 2차 미분을 활용하여 갱신
+
+## 29.2 뉴턴 방법을 활용한 최적화 구현
+- 2차 미분은 아직 자동이 안되므로 수동으로 구하면
+    $$
+    \begin{aligned}
+    y& = x^4 - 2x^2\\
+    \frac{\partial{y}}{\partial{x}}& = 4x^3 - 4x\\
+    \frac{\partial^2{y}}{\partial{x^2}}& = 12x^2 - 4
+    \end{aligned}
+    $$
 
 ---
 
