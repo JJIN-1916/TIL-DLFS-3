@@ -843,9 +843,9 @@ $$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdo
 - 근사한 2차 함수는 $y = f(x)$ 에 접하는 곡선으로 2차 함수의 최솟값은 미분 결과가 0인 위치를 확인 하면 됨
     $$
     \begin{aligned}
-    \frac{d}{dx}(f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2)& = 0\\
-    f'(a) + f''(a)(x-a)& = 0\\
-    x& = a - \frac{f'(a)}{f''(a)}
+    \frac{d}{dx}(f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2) &= 0 \\
+    f'(a) + f''(a)(x-a) &= 0 \\
+    x &= a - \frac{f'(a)}{f''(a)}
     \end{aligned}
     $$
 - 경사하강법 $x \leftarrow x - \alpha f'(x)$ : 스칼라 값인 $\alpha$를 통해 갱신
@@ -854,11 +854,11 @@ $$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdo
 ## 29.2 뉴턴 방법을 활용한 최적화 구현
 - 2차 미분은 아직 자동이 안되므로 수동으로 구하면
     $$
-    \begin{aligned}
+    \begin{align}
     y &= x^4 - 2x^2 \\
     \frac{\partial{y}}{\partial{x}} &= 4x^3 - 4x \\
     \frac{\partial^2{y}}{\partial{x^2}} &= 12x^2 - 4
-    \end{aligned}
+    \end{align}
     $$
 
 ---
