@@ -855,8 +855,8 @@ $$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdo
 - 2차 미분은 아직 자동이 안되므로 수동으로 구하면
     $$
     \begin{aligned}
-    y &= x^4 - 2x^2\\
-    \frac{\partial{y}}{\partial{x}} &= 4x^3 - 4x\\
+    y &= x^4 - 2x^2 \\
+    \frac{\partial{y}}{\partial{x}} &= 4x^3 - 4x \\
     \frac{\partial^2{y}}{\partial{x^2}} &= 12x^2 - 4
     \end{aligned}
     $$
