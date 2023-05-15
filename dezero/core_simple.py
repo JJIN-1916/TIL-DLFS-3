@@ -96,17 +96,16 @@ class Function:
         xs = [x.data for x in inputs]
         ys = self.forward(*xs) # 별표를 붙여 언팩
         if not isinstance(ys, tuple): # 튜플이 아닌 경우 추가 지원
-          ys = (ys,)
+            ys = (ys,)
         outputs = [Variable(as_array(y)) for y in ys]
         
         if Config.enable_backprop:
             self.generation = max([x.generation for x in inputs]) # 세대 설정
             for output in outputs:
                 output.set_creator(self) # 연결 설정
-        
             self.inputs = inputs 
             self.outputs = [weakref.ref(output) for output in outputs]
-            return outputs if len(outputs) > 1 else outputs[0]
+        return outputs if len(outputs) > 1 else outputs[0]
      
     def forward(self, x):
           raise NotImplementedError()
