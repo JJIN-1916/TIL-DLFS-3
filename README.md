@@ -830,7 +830,7 @@ print(d)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 29 : 뉴턴 방법으로 푸는 최적화(수동 계산)</summary>
 
@@ -861,6 +861,104 @@ $$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdo
     \end{align}
     $
 
+---
+
+</details>
+
+<details open>
+
+<summary>step 30 : 고차 미분(준비편)</summary>
+
+---
+## 30.1 확인 1 : Variable 인스턴스 변수
+- Variable 클래스의 인스턴스 변수에 대한 복습
+```python
+class Variable:
+    def __init__(self, data, name=None):
+        if data is not None:
+             if not isinstance(data, np.ndarray):
+                  raise TypeError('{}은(는) 지원하지 않습니다.'.format(type(data)))
+
+        self.data = data
+        self.name = name
+        self.grad = None
+        self.creator = None
+        self.generation = 0 
+```
+- 주의할 것은 `data`, `grad` 모두 `ndarray` 인스턴스로 저장한다는 사실
+- x = Variabel(np.array(2.0)) -> x.data = object
+- x.backward(), x.grad = np.array(1.0) -> x.grad = object
+
+## 30.2 확인 2 : Function 클래스
+- Function 클래스의 __call__ 메서드 복습
+```python
+class Function:
+    def __call__(self, *inputs):
+        inputs = [as_variable(x) for x in inputs]
+        # 순전파 메인 처리
+        xs = [x.data for x in inputs]
+        ys = self.forward(*xs) 
+        if not isinstance(ys, tuple): 
+          ys = (ys,)
+        outputs = [Variable(as_array(y)) for y in ys]
+        
+        if Config.enable_backprop:
+            self.generation = max([x.generation for x in inputs]) 
+            # '연결'을 만듦
+            for output in outputs:
+                output.set_creator(self)
+            self.inputs = inputs 
+            self.outputs = [weakref.ref(output) for output in outputs]
+        return outputs if len(outputs) > 1 else outputs[0]
+```
+- 순전파의 메인 처리에서 inputs의 data를 꺼내 리스트에 모으고 forward를 계산
+- 연결에서 Variabel과 Function의 관계가 만들어짐, 변수에서 함수로의 연결은 set_creator 메서드에서 만들어짐, 또한 함수의 inputs와 outputs 인스턴스 변수에 저장하여 연결을 유지
+
+## 30.3 확인 3 : Variable 클래스의 역전파 
+- backward 메서드 복습
+```python
+class Variable:
+    ...
+
+    def backward(self, retain_grad=False):
+      if self.grad is None:
+           self.grad = np.ones_like(self.data)
+      
+      funcs = []
+      seen_set = set()
+
+      def add_func(f):
+           if f not in seen_set:
+                funcs.append(f)
+                seen_set.add(f)
+                funcs.sort(key=lambda x: x.generation)
+      
+      add_func(self.creator)
+      
+      while funcs:
+           f = funcs.pop() 
+
+           # 역전파 계산(메인 처리)
+           gys = [output().grad for output in f.outputs] # 1
+           gxs = f.backward(*gys) # 2
+           if not isinstance(gxs, tuple): 
+                gxs = (gxs,) 
+            
+           for x, gx in zip(f.inputs, gxs): # 3
+                if x.grad is None:
+                      x.grad = gx 
+                else:
+                      x.grad = x.grad + gx 
+
+                if x.creator is not None:
+                     add_func(x.creator)
+           if not retain_grad:
+                for y in f.outputs:
+                     y().grad = None 
+```
+- 1에서 인스턴스 변수인 grad를 리스트로 모음
+- 2에서 backward 메서드에는 ndarray 인스턴스가 담긴 리스트가 전달
+- 3에서 출력쪽에서 전파하는 미분값(gxs)을 함수의 입력변수(f.inputs)의 grad로 설정
 ---
 
 </details>
