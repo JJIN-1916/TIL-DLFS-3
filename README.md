@@ -996,16 +996,19 @@ class Sin(Function):
 
 ---
 ## 32.1 새로운 DeZero로!
-- 
+- 가장 중요한 변화는 Variable 클래스의 인스턴스 변수인 `grad`
+- (`dezero/core.py`)
 
 ## 32.2 함수 클래스의 역전파
-- 
+- 역전파 계산은 Variable 인스턴스에 대해 이루어짐
+- (`dezero/core.py`)
 
 ## 32.3 역전파를 더 효율적으로(모드 추가)
--
+- '역전파 비활성 모드'로 전환하여 역전파 처리를 생략
+- 2차 미분이 필요할 경우 `create_graph`를 `True`로 설정
 
 ## 32.4 __init__.py 변경
--
+- (`dezero/__init__.py`)
 
 ---
 

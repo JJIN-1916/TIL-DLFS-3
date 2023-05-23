@@ -1,4 +1,5 @@
-is_simple_core = True
+# step23.py 에서 step32.py까지는 simple_core 이용
+is_simple_core = False # True
 
 if is_simple_core:
     from dezero.core_simple import Variable
