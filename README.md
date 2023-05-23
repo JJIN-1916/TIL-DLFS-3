@@ -865,7 +865,7 @@ $$f(x)=f(a)+f'(a)(x-a)+\frac{1}{2!}f''(a)(x-a)^2+\frac{1}{3!}f'''(a)(x-a)^3+\cdo
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 30 : 고차 미분(준비편)</summary>
 
@@ -959,6 +959,54 @@ class Variable:
 - 1에서 인스턴스 변수인 grad를 리스트로 모음
 - 2에서 backward 메서드에는 ndarray 인스턴스가 담긴 리스트가 전달
 - 3에서 출력쪽에서 전파하는 미분값(gxs)을 함수의 입력변수(f.inputs)의 grad로 설정
+---
+
+</details>
+
+<details open>
+
+<summary>step 31 : 고차 미분(이론편)</summary>
+
+---
+## 31.1 역전파 계산 
+- 계산의 '연결'은 `Function` 클래스의 `__call__` 메서드에서 만들어짐이 중요
+```python
+class Sin(Function):
+    ...
+
+    def backward(self, gy):
+        x = self.inputs[0].data
+        gx = gy * np.cos(x) # 구체적인 게산이 이루어짐
+        return gx
+```
+- 만약 역전파를 계산할 때도 '연결' 이 만들어진다면 고차미분을 자동으로 계산할 수 있음!!
+- gx.backward()를 호출함으로써 x에 대한 미분이 한 번 더 이루어짐. 즉, x의 2차 미분!
+
+## 31.2 역전파로 계산 그래프 만들기
+- DeZero는 Variable 인스턴스를 사용해서 일반적인 계산(순전파)을 하는 시점에 '연결'이 만들어짐
+- 즉, 함수의 backward 메서드에서도 ndarray 인스턴스가 아닌 Variable 인스턴스를 사용하면 '연결'이 만들어짐
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 32 : 고차 미분(구현편)</summary>
+
+---
+## 32.1 새로운 DeZero로!
+- 
+
+## 32.2 함수 클래스의 역전파
+- 
+
+## 32.3 역전파를 더 효율적으로(모드 추가)
+-
+
+## 32.4 __init__.py 변경
+-
+
 ---
 
 </details>
