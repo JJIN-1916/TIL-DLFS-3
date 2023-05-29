@@ -1114,10 +1114,39 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 ---
 ## 37.1 원소별 계산
 - add, mul, div, sin 등 DeZero의 함수는 입력 출력이 `스칼라` 라고 가정했음
+- (`steps/step37.py`)
 
 
 ## 37.2 텐서 사용 시의 역전파
--
+- 텐서를 사용한 역전파를 적용하여면 무엇을 바꿔야할까?  
+사실 `텐서`를 사용해도 역전파 코드가 문제없이 작동한다. 그 이유는
+    - 우리는 그동안 `스칼라`를 대상으로 역전파를 구현
+    - 지금까지 구현한 DeZero 함수에 `텐서`를 건네면 텐서의 원소마다 `스칼라`로 계산
+    - 텐서의 원소별 `스칼라`계산이 이루어지면 `스칼라`를 가정해 구현한 역전파는 `텐서`의 원소별 계산에서도 성립
+
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 38 : 형상 변환 함수</summary>
+
+---
+## 38.1 reshape 함수 구현
+- reshape 함수는 단순히 형상만 변환함. 다시 말해, 구체적인 계산을 하지 않음
+- (`steps/step38.py`)
+- (`dezero/functions.py`)
+
+## 38.2 Variable 에서 reshape 사용하기
+- numpy의 reshape를 ndarray 인스턴스의 메서드로 사용할 수 있고 x.reshape(2, 3) 과  같이 가변 인수도 받음 -> DeZero에서도 같은 방법을 제공하고 싶음
+- (`dezero/core.py`)
+
+## 38.3 행렬의 전치
+- transpose 구현
+- (`dezero/functions.py`)
+- (`dezero/core.py`)
 
 ---
 
