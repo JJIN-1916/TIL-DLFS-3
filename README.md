@@ -1049,7 +1049,7 @@ class Sin(Function):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 35 : 고차 미분 계산 그래프</summary>
 
@@ -1079,7 +1079,7 @@ $$\begin{align}
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 36 : 고차 미분 이외의 용도</summary>
 
@@ -1107,3 +1107,18 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
+<details open>
+
+<summary>step 37 : 텐서를 다루다</summary>
+
+---
+## 37.1 원소별 계산
+- add, mul, div, sin 등 DeZero의 함수는 입력 출력이 `스칼라` 라고 가정했음
+
+
+## 37.2 텐서 사용 시의 역전파
+-
+
+---
+
+</details>
