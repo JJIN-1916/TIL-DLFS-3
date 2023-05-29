@@ -94,7 +94,7 @@ class Variable:
 class Function:
     def __call__(self, *inputs):
         inputs = [as_variable(x) for x in inputs]
-
+        
         xs = [x.data for x in inputs]
         ys = self.forward(*xs) # 별표를 붙여 언팩
         if not isinstance(ys, tuple): # 튜플이 아닌 경우 추가 지원
@@ -176,7 +176,7 @@ class Pow(Function):
      
     def backward(self, gy):
         # x = self.inputs[0].data
-        x = self.inputs
+        x, = self.inputs
         c = self.c
         gx = c * x ** (c-1) * gy
         return gx

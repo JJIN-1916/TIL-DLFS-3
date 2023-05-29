@@ -963,7 +963,7 @@ class Variable:
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 31 : 고차 미분(이론편)</summary>
 
@@ -990,7 +990,7 @@ class Sin(Function):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 32 : 고차 미분(구현편)</summary>
 
@@ -1009,6 +1009,41 @@ class Sin(Function):
 
 ## 32.4 __init__.py 변경
 - (`dezero/__init__.py`)
+
+---
+
+</details>
+
+</details>
+
+<details open>
+
+<summary>step 33 : 뉴턴 방법으로 푸는 최적화(자동 계산)</summary>
+
+---
+## 33.1 2차 미분 계산하기
+- (`steps/step33.py`)
+
+## 33.2 뉴턴 방법을 활용한 최적화
+- (`steps/step33.py`)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 34 : sin 함수 고차 미분</summary>
+
+---
+## 34.1 sin 함수 구현
+- (`dezero/functions.py`)
+
+## 34.2 cos 함수 구현
+- (`dezero/functions.py`)
+
+## 34.3 sin 함수 고차 미분
+- (`steps/step34.py`)
 
 ---
 
