@@ -1016,7 +1016,7 @@ class Sin(Function):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 33 : 뉴턴 방법으로 푸는 최적화(자동 계산)</summary>
 
@@ -1031,7 +1031,7 @@ class Sin(Function):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 34 : sin 함수 고차 미분</summary>
 
@@ -1048,3 +1048,62 @@ class Sin(Function):
 ---
 
 </details>
+
+<details open>
+
+<summary>step 35 : 고차 미분 계산 그래프</summary>
+
+---
+## 35.1 tanh 함수 미분
+- `tanh` 는 쌍곡탄젠트 혹은 하이퍼볼릭 탄젠트 라고 읽음
+$$y = \tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$$
+- 입력을 `-1 ~ 1` 사이의 값으로 변환
+- 분수 함수의 미분 공식
+$$\bigg( \frac{f(x)}{g(x)} \bigg)' = \frac{f'(x)g(x)-f(x)g'(x)}{g(x)^2}$$
+- 자연로그에 대해 $\frac{\partial e^x}{\partial x}=e^x$ 이고 $\frac{\partial e^{-x}}{\partial x}=-e^{-x}$ 인 점을 이용하면 아래와 같은 식을 얻음
+
+$$\begin{align}
+   \frac{\partial \tanh(x)}{\partial x}&=\frac{(e^x+e^{-x})(e^x+e^{-x})-(e^x-e^{-x})(e^x-e^{-x})}{(e^x+e^{-x})^2} \\
+   &= 1-\frac{(e^x-e^{-x})(e^x-e^{-x})}{(e^x+e^{-x})^2} \\
+   &= 1-\tanh(x)^2 \\
+   &= 1-y^2
+\end{align}$$
+
+## 35.2 tanh 함수 구현
+- (`dezero/functions.py`)
+
+## 35.3 고차 미분 계산 그래프 시각화
+- (`steps/step35.py`)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 36 : 고차 미분 이외의 용도</summary>
+
+---
+## 36.1 double backprop 의 용도
+- 다음의 두 식이 주어졌을 때 x = 2.0에서 z의 미분 $\frac{\partial z}{\partial x}$ 를 구하라
+$$y = x^2$$
+$$z = (\frac{\partial y}{\partial x})^3 + y $$
+
+- 손으로 계산했을 때
+$$\frac{\partial y}{\partial x} = 2x$$
+$$z = (\frac{\partial y}{\partial x})^3 + y = 8x^3 + x^2$$
+$$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
+
+- gx = x.grad 는 단순한 변수가 아니라 계산 그래프(식)  
+따라서 x.grad 계산 그래프에 대해 추가로 역전파할 수 있음
+
+- (`steps/step36.py`)
+
+## 36.2 딥러닝 연구에서의 사용 예
+- WGAN-GP 논문에서 최적화 식에 기울기가 들어있음  
+이 기울기는 첫 번째 역전파에서 구할 수 있고 이 기울기를 사용해서 함수를 계산하고 이를 최적화하기 위해 두 번쨰 역전파를 함 -> double backprop
+
+---
+
+</details>
+
