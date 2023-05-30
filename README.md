@@ -1107,7 +1107,7 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 37 : 텐서를 다루다</summary>
 
@@ -1129,7 +1129,7 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 38 : 형상 변환 함수</summary>
 
@@ -1151,3 +1151,54 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 ---
 
 </details>
+
+<details open>
+
+<summary>step 39 : 합계 함수</summary>
+
+---
+## 39.1 sum 함수의 역전파
+- 덧셈의 미분은 $y=x_0+x_1$ 일 때 $\frac{\partial y}{\partial x_0}=1$, $\frac{\partial y}{\partial x_1}=1$
+- 따라서 역전파는 출력쪽에서 전해지는 기울기를 그대로 입력 쪽으로 흘려보내기만 하면 됨
+- 원소가 2개 이상인 벡터의 합에 대한 역전파는 출력쪽에서 전해준 값인 1 을 입력변수의 형상과 같아지도록함
+
+## 39.2 sum 함수 구현
+- DeZero의 sum함수 역전파에서는 입력변수의 형상과 같아지도록 기울기의 원소를 복사 
+- (`steps/step39.py`)
+
+## 39.3 axis와 keepdims
+- 합계를 구할 떄 '축'을 지정할 수 있음 -> `axis`
+- 입력과 출력의 차원 수(축 수)를 똑같게 유지할지 정하는 플래그 -> `keepdims`
+- (`dezero/core.py`)
+- (`dezero/functions.py`)
+- (`steps/step39.py`)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 40 : 브로드캐스트 함수</summary>
+
+---
+## 40.1 broadcast_to 함수와 sum_to 함수(넘파이 버전)
+- 넘파이의 `np.broadcast_to(x, shape)` 함수는 ndarray 인스턴스인 `x`의 원소를 복제하여 `shape` 인수로 지정한 형상이 되도록 해줌
+- (`steps/step40.py`)
+- 브로드캐스트(원소 복사)가 수행된 후 역전파는?
+    - 기울기의 `합`을 구함
+- broadcast_to 의 역전파는 sum_to
+- `sum_to(x, shape)` 함수는 `x`의 원소 합을 구해 `shape` 형상으로 만들어주는 함수
+- sum_to 의 역전파는 broadcast_to
+
+## 40.2 broadcast_to 함수와 sum_to 함수(DeZero 버전)
+- (`dezero/functions.py`)
+
+## 40.3 브로드캐스트 대응
+- (`steps/step40.py`)
+- (`dezero/core.py`)
+
+---
+
+</details>
+
