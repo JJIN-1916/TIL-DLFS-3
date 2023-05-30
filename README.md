@@ -1202,3 +1202,27 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
+<details open>
+
+<summary>step 41 : 행렬의 곱</summary>
+
+---
+## 41.1 벡터의 내적과 행렬의 곱
+- 벡터의 내적 : 벡터 $\textbf{a} = (a_1, \cdots , a_n)$, $\textbf{b} = (b_1, \cdots , b_n)$ 가 있다고 가정했을 때, 두 벡터의 내적은 아래와 같음. 두 벡터 사이의 대응 원소의 곱을 모두 더한 값 $$\textbf{ab} = a_1 b_1 + a_2 b_2 \cdots + a_n b_n$$
+- 행렬의 곱 : 왼쪽 행렬의 '가로 방향 벡터'와 오른쪽 행렬의 '세로 방향 벡터' 사이의 내적을 계산
+- (`steps/step41.py`)
+
+## 41.2 행렬의 형상 체크
+- 행렬과 벡터를 사용한 계산에서는 '형상'에 주의해야 함! 
+- 3 X 2 행렬 $\textbf{a}$ 와 2 X 4 행렬 $\textbf{b}$ 를 곱하여 3 X 4 행렬 $\textbf{c}$ 가 만들어질 때,  
+행렬 $\textbf{a}$ 와 행렬 $\textbf{b}$ 의 대응하는 차원(축)의 원소 수가 일치해야 함
+
+## 41.3 행렬 곱의 역전파
+- DeZero는 행렬 곱 계산을 MatMul 클래스와 matmul 함수로 구현함
+- matmul 은 matrix multiply 약자 
+- (어렵다... 이해가 어려워...)
+- (`dezero/functions.py`)
+
+---
+
+</details>
