@@ -114,7 +114,31 @@ class MatMul(Function):
         gx = matmul(gy, W.T)
         gW = matmul(x.T, gy)
         return gx, gW
+    
 
+class MeanSquaredError(Function):
+    def forward(self, x0, x1):
+        diff = x0 - x1
+        y = (diff ** 2).sum() / len(diff)
+        return y
+    
+    def backward(self, gy):
+        x0, x1 = self.inputs
+        diff = x0 - x1
+        gx0 = gy * diff * (2. / len(diff))
+        gx1 = -gx0
+        return gx0, gx1
+    
+
+class Exp(Function):
+    def forward(self, x):
+        return np.exp(x)
+    
+    def backward(self, gy):
+            y = self.outputs[0]()  # weakref
+            gx = gy * y
+            return gx
+        
 
 def sin(x):
     return Sin()(x)
@@ -156,3 +180,27 @@ def sum_to(x, shape):
 
 def matmul(x, W):
     return MatMul()(x, W)
+
+
+def exp(x):
+    return Exp()(x)
+
+
+def mean_squared_error(x0, x1):
+    return MeanSquaredError()(x0, x1)
+
+
+def linear_simple(x, W, b=None):
+    t = matmul(x, W)
+    if b is None:
+        return t
+    
+    y = t + b
+    t.data = None # t의 데이터 삭제
+    return y
+
+
+def sigmoid_simple(x):
+    x = as_variable(x)
+    y = 1 / (1+ exp(-x))
+    return y 

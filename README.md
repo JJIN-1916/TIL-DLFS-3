@@ -1152,7 +1152,7 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 39 : 합계 함수</summary>
 
@@ -1177,7 +1177,7 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 40 : 브로드캐스트 함수</summary>
 
@@ -1202,7 +1202,7 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 41 : 행렬의 곱</summary>
 
@@ -1222,6 +1222,99 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 - matmul 은 matrix multiply 약자 
 - (어렵다... 이해가 어려워...)
 - (`dezero/functions.py`)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 42 : 선형 회귀</summary>
+
+---
+## 42.1 토이 데이터셋 
+- 100개의 토이 데이터셋 준비 
+```python
+import numpy as np
+
+np..random.seed(0) # 시드값 고정
+x = np.random.rand(100, 1)
+y = 5 + 2 * x + np.random.rand(100, 1) # y에 무작위 노이즈 추가
+```
+
+## 42.2 선형 회귀 이론
+- x로부터 실숫값 y를 예측하는 것 : 회귀(regressions)
+- 선형 관계를 가정하기에 $y=Wx+b$ 식으로 표현 ($W$는 스칼라값)
+- 우리의 목표인 $y=Wx+b$을 찾으려고 할 때, 예측치의 차이인 잔차(residual)을 최소화 해야함
+- 모델의 성능이 얼마나 `나쁜가`를 평가하는 함수 -> 손실함수(loss function) 
+- 선형 회귀는 손실함수로 평균 제곱 오차(mean squared error)를 이용
+$$L = \frac{N}{1}\sum^{N}_{i=1}(f(x_i)-y_i)^2$$
+- 손실 함수의 출력이 최소화하는 $W$와 $b$를 찾는 것
+
+## 42.3 선형 회귀 구현
+- (`steps/step42.py`)
+
+## 42.4 [보충] DeZer의 mean_squared_error 함수
+- 이전 코드
+```python
+def mean_squared_error(x0, x1):
+    diff = x0 - x1
+    return F.sum(diff ** 2) / len(diff)
+```
+- 이름 없는 변수 3가지 -> 메모리 잡아먹는 친구들
+    - x0 - x1 = ?
+    - ? ** 2 = ??
+    - sum(??) = ???
+- 조금 더 나은 방식 도입 (`dezero/functions.py`)
+
+
+---
+
+</details>
+
+
+<details open>
+
+<summary>step 43 : 신경망</summary>
+
+---
+## 43.1 DeZero의 linear 함수
+- 선형회귀를 수행한 계산은 '행렬의 곱' 과 '덧셈'
+```
+y = F.matmul(x, W) + b
+```
+- 이 변환을 선형 변환(linear transformation) or 아핀 변환(affine transformation)
+- 클래스를 상속하여 함수 클래스를 선언하는 방식이 메모리를 더 효율적으로 사용함 (참고. 42.4)
+- 그러나 클래스를 선언하지 않고 메모리를 효율적으로 사용할 수 있는 방법도 있음!!
+    - 위 선형회귀 식에서 역전파를 구할 때, $x+W$를 담은 변수는 역전파시 사용하지 않음
+    - (`dezero/functions.py`)
+- 신경망에서 메모리으 대부분을 차지하는 것이 중간 계산 결과인 텐서(ndarray 인스턴스)이다. 특히 큰 텐서를 취급하는 경우 ndarray 인스턴스가 거대해지므로 불필요한 ndarray 인스턴스는 즉시 삭제하는 것이 바람직하다. 
+
+## 43.2 비션형 데이터셋
+- (`steps/step43.py`)
+- 비선형 함수인 sine 함수 사용
+
+## 43.3 활성화 함수와 신경망
+- 선형 변환은 입력 데이터를 선형으로 변환
+- 신경망은 출력에 비선형 변환을 수행함 -> 활성화 함수(activation function)
+- 대표적으로 ReLU함수와 sigmoid function 등이 있음
+$$y = \frac{1}{1 + \exp(-x)}$$
+- (`dezero/functions.py`)
+
+## 43.4 신경망 구현
+- 2층 신경망은 다음처럼 구현할 수 있음
+```python
+W1, b1 = Variable(...), Variable(...)
+W2, b2 = Variable(...), Variable(...)
+
+def predict(x):
+    y = F.linear(x, W1, b1) # 또는 F.linear_simple(...)
+    y = F.sigmoid(y) # 또는 F.sigmoid_simple(y)
+    y = F.linear(y, W2, b2)
+    return y
+```
+- (`steps/step43.py`)
+- 추론을 제대로 하려면 `학습`이 필요하고 학습에서는 추론을 처리한 후 손실함수를 추가하고 손실함수의 출력을 최소화하는 매개변수를 찾느다. 
 
 ---
 
