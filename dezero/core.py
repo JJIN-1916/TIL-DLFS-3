@@ -201,6 +201,10 @@ class Pow(Function):
         c = self.c
         gx = c * x ** (c-1) * gy
         return gx
+    
+
+class Parameter(Variable):
+     pass
 
 
 @contextlib.contextmanager

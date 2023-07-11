@@ -1227,7 +1227,7 @@ $$\frac{\partial z}{\partial x} = 24x^2 + 2x$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 42 : 선형 회귀</summary>
 
@@ -1273,7 +1273,7 @@ def mean_squared_error(x0, x1):
 </details>
 
 
-<details open>
+<details>
 
 <summary>step 43 : 신경망</summary>
 
@@ -1315,6 +1315,47 @@ def predict(x):
 ```
 - (`steps/step43.py`)
 - 추론을 제대로 하려면 `학습`이 필요하고 학습에서는 추론을 처리한 후 손실함수를 추가하고 손실함수의 출력을 최소화하는 매개변수를 찾느다. 
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 44 : 매개변수를 모아두는 계층</summary>
+
+---
+## 44.1 Parameter 클래스 구현
+- 매개변수는 경사하강법 등의 최적화 기법에 의해 갱신되는 변수. 가중치와 편향이 매개변수에 해당함
+- 매개변수 자동화를 위한 클래스 선언(Parameter, Layer)
+- (`steps/step44.py`)
+- Parameter 인스턴스와 Variable 인스턴스를 조합하여 계산할 수 있고 isinstance 함수로 구분할 수 있음
+
+## 44.2 Layer 클래스 구현
+- Layer는 DeZero의 Function 클래스와 마찬가지로 변수를 변환하는 클래스  
+그러나 매개변수를 유지한다는 점에서 다름, 매개변수를 유지하고 매개변수를 사용해 변환함
+- (`dezero/layers.py`)
+    - `__setattr__` 인스턴스 변수를 설정할 떄 호출하는 특수 메서드
+    - `__setattr__(self, name, value)`는 이름이 name인 인스턴스 변수에 값으로 value로 전달해줌 
+    - value가 Parameter 인스턴스라면 self._params 에 name을 추가함 
+- (`steps/step44.py`)
+- (`dezero/layers.py`)
+    - `__call__` 메서드는 입력받은 인수를 건네 forward 메서드를 호출. forward 메서드는 자식 클래스에서 구현할 것
+    - `yield` 는 return 처럼 사용할 수 있음. 
+        - return 은 처리를 종료하고 값을 반환
+        - `yield` 는 처리를 일시중지(suspend)하고 값을 반환 -> 작업을 재개(resume)할 수 있음
+
+## 44.3 Linear 클래스 구현
+- 함수로서의 Linear 클래스가 아니라 계층으로서의 Linear 클래스 구현
+- (`steps/step44.py`)
+    - DeZero의 linear 함수(linera_sample)를 호출할 뿐
+- (`dezero/layers.py`)
+    - 더 나은 방법이 있었으니, 가중치 $W$를 생성하는 시점을 늦추는 방식
+    - 구체적으로 가중치를 forward 메서드에서 생성함으로써 Linear 클래스의 입력크기를 자동으로 결정할 수 있음
+    - 주목할 점은 in_size를 지정하지 않아도 된다는 것 
+
+## 44.4 Layer를 이용한 신경망 구현
+- sin 함수의 데이터셋에 대한 회귀 문제를 다시 풀어보자
 
 ---
 
