@@ -9,6 +9,7 @@ if is_simple_core:
     from dezero.core_simple import as_array
     from dezero.core_simple import as_variable
     from dezero.core_simple import setup_variable
+    from dezero.models import Model
 
 else:
     from dezero.core import Variable
@@ -19,5 +20,6 @@ else:
     from dezero.core import as_variable
     from dezero.core import setup_variable
     from dezero.core import Parameter
+    from dezero.models import Model
 
 setup_variable()

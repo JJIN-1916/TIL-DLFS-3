@@ -1320,7 +1320,7 @@ def predict(x):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 44 : 매개변수를 모아두는 계층</summary>
 
@@ -1356,6 +1356,52 @@ def predict(x):
 
 ## 44.4 Layer를 이용한 신경망 구현
 - sin 함수의 데이터셋에 대한 회귀 문제를 다시 풀어보자
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 45 : 계층을 모아두는 계층</summary>
+
+---
+## 45.1 Layer 클래스 확장
+- Layer 클래스를 사용하면 매개변수를 직접 다루지 않아도 되서 편하지만 Layer 인스턴스 자체를 관리해야함 -> Layer 클래스 확장 
+- Layer 안에 다른 Layer 가 들어가는 구조 
+- (`dezero/layers.py`)
+    - Layer 인스턴스 이름도 params에 추가
+    - params 매서드는 _params 에서 name을 꺼내 해당하는 객체를 obj로 꺼냄. 이떄 obj 가 Layer 라면 obj.params()를 호출
+    - `yield` 를 사용한 함수를 제너레이터(generator) 라고 함.  제너레이터를 사용하여 또 다른 제너레이터를 만들고자 할 때는 `yield from`을 사용 
+- (`steps/step45.py`)
+    - Layer 클래스 하나로 신경망의 매개변수를 한꺼번에 관리할 수 있음
+    - Layer 클래스를 상속하여 모델 전체를 클래스로 정의할 수 있음
+
+## 45.2 Model 클래스
+- 모델은 '사물의 본질을 단순하게 표현한 것'이라는 뜻
+- 머신러닝에서도 마찬가지. 복잡한 패턴이나 규칙이 숨어 있는 현상을 수식을 사용하여 단순하게 표현한 것. 신경망도 수식으로 표현할 수 있는 함수 -> `모델`
+- (`dezero/layers.py`)
+    - Layer 클래스 기능을 이어받으며 시각화 메서드 하나 추가
+
+## 45.3 Model을 사용한 문제 해결
+- (`steps/step45.py`)
+    - sin 함수로 생성한 데이터셋 회귀 문제를 Model 클래스를 이용하여 다시 풀어보자 
+
+## 45.4 MLP 클래스
+- (`dezero/models.py`)
+    - fc(full connect)의 약자로 `fc_output_sizes`에 신경망을 구성하는 출력크기를 튜플 또는 리스트로 전달 
+    - (10, 1)를 넣으면 2개의 Linear 계층을 만듬
+    - MLP (Multi-Layer Perception)의 약자로 다층 퍼셉트론이라고 함. 완전연결계층 신경망의 별칭으로 흔히 쓰임
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 46 : </summary>
+
+---
 
 ---
 
