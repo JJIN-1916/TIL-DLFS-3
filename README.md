@@ -1361,7 +1361,7 @@ def predict(x):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 45 : 계층을 모아두는 계층</summary>
 
@@ -1399,10 +1399,49 @@ def predict(x):
 
 <details open>
 
-<summary>step 46 : </summary>
+<summary>step 46 : Optimizer로 수행하는 매개변수 갱신</summary>
+
+---
+## 46.1 Optimizer 클래스
+- 매개변수 갱신을 위한 기반 클래스는 Optimizer 
+- 구체적인 최적화 기법은 Optimizer 클래스를 상속한 곳에서 구현 
+- (`dezero/optimizer.py`)
+    - 초기화 메서드 : target, hooks 인스턴스 초기화
+    - setup 메서드 : 매개변수를 갖는 클래스를 target 인스턴스로 설정
+    - update 메서드 : 매개변수 갱신, None 은 건너뜀
+    - update_one 메서드 : 구체적인 매개변수 갱신을 재정의하는 곳
+    - add_hook : 매개변수 갱신 전 전처리 해주는 기능
+
+## 46.2 SGD 클래스 구현
+- 경사하강법으로 매개변수를 갱신하는 클래스 구현 
+- (`dezero/optimizers.py`)
+    - `SGD` 는 확률적경사하강법(Stochastic Gradient Descent)의 약자
+    - 확률적이라는 말은 데이터 중 무작위(확률적으로) 선별한 데이터에 대해 경사하강법을 수행하는 것 
+
+## 46.3 SGD 클래스를 사용한 문제 해결
+- (`steps/step45.py`)
+
+## 46.4 SGD 이외의 최적화 기법
+- 대표적인 최적화 기법 Momentum, AdaGrad, AdaDelta, Adam 등등
+- Optimizer 클래스를 도입한 첫번째 목표는 이처럼 다양한 최적화 기법을 손쉽게 전환하기 위함 
+- Momentum 구현 (`dezero/optimizers.py`)
+    - $W \leftarrow W+v$ 여기서 $v$는 물리학에서의 속도를 의미
+    - $v \leftarrow \alpha v - \eta \frac{\partial L}{\partial W}$ $W$는 갱신할 매개변수,   
+    $\frac{\partial L}{\partial W}$ 는 기울기($W$에 관한 손실함수 $L$의 기울기), $\eta$는 학습률,  
+    $\alpha v$는 물체가 아무 힘도 받지 않을 때 서서히 감속시키는 역할($\alpha$ 는 0.9로 설정)
+    - 속도에 해당하는 데이터들은 `self.vs` 에 유지
+    - `update_one`이 호출될 때 매개변수와 같은 타입의 데이터를 생성
 
 ---
 
+</details>
+
+<details open>
+
+<summary>step 47 : </summary>
+
+---
+## 47.1 
 ---
 
 </details>
