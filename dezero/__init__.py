@@ -21,5 +21,6 @@ else:
     from dezero.core import setup_variable
     from dezero.core import Parameter
     from dezero.models import Model
+    from dezero.dataloaders import DataLoader
 
 setup_variable()

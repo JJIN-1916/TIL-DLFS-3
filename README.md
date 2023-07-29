@@ -1506,8 +1506,106 @@ $$L=-\log{ p [t]}$$
 ## 48.1 스파이럴 데이터셋
 - 스파이럴 : 나선형 혹은 소용톨이 모양이라는 뜻
 - (`steps/step48.py`, `steps/step48_plot.png`)
-- 
+
+## 48.2 학습 코드
+- (`steps/step48.py`)
+    - `softmax_cross_entropy` 클래스 선언이 필요함
+- (`steps/step48_loss_plot.png`)
+- (`steps/step48_plot.png`)
+- (`steps/step48_results.png`)
+
 ---
 
+</details>
+
+<details open>
+
+<summary>step 49 : Dataset 클래스와 전처리</summary>
+
+---
+## 49.1 Dataset 클래스 구현
+- 100만개와 같은 거대한 데이터셋을 하나의 ndarray 인스턴스로 처리하면 모든 원소를 한꺼번에 메모리에 올려야하는 문제가 있다.
+- Dataset 클래스는 기반 클래스로서의 역할을 하고 사용자가 실제로 사용하는 데이터셋은 이를 상속하여 구현하게 할 것이다. 
+- (`dezero/datasets.py`)
+    - train 인수는 '학습'이나 '테스트'이나를 구별하기 위한 플래그
+    - 인스턴스 변수 data와 label에는 각각 입력 데이터와 레이블을 보관한다.
+    - 자식 클래스에서는 prepare 메서드가 데이터 준비 작업을 하도록 구현해야한다. 
+    - 중요한 메서드는 `__getitem__`과 `__len__` 이다.
+    - 두 메서드(인터페이스)를 제공해야지만 'DeZero 데이터셋'이라고 할 수 있기 때문이다.
+        - `__getitem__` 은 파이썬의 특수 메서드로 x[0], x[1]처럼 괄호를 사용해 접근할 때 동작을 정의한다.
+        - 단순히 지정된 인덱스에 위치하는 데이터를 꺼냅니다.
+        - 레이블 데이터가 없다면 None을 반환한다.
+        - `__len__` len 함수를 사용할 때 호출된다.  
+
+## 49.2 큰 데이터셋의 경우
+- 데이터셋이 훨씬 크다면..?
+```python
+class BigData(Dataset):
+    def __getitem__(index):
+        x = np.load('data/{}.npy'.format(index))
+        t = np.load('label/{}.npy'.format(index))
+        return x, t
+
+    def __len__():
+        return 1000000
+```
+- 각 100만개씩 데이터가 저장되어 있다고 가정했을 때, BigData 클래스를 초기화 할 때는 데이터를 읽지 않고, 데이터에 접근할 때 비로소 읽게 하는 것이다.
+- 'DeZero 데이터셋'이 되기 위한 요건은 `__getitem__`, `__len__` 두 메서드를 구현 하는 것이다.
+
+## 49.3 데이터 이어 붙이기
+- 신경망을 학습시킬 때는 데이터셋 중 일부를 미니배치로 꺼낸다.
+```python
+train_set = dezero.datasets.Spiral()
+
+batch_index = [0, 1, 2]
+batch = [train_set[i] for i in batch_index]
+# batch = [(data_0, label_0), (data_1, label_1), (data_2, label_2)]
+```
+
+## 49.4 학습 코드
+- (`steps/step49.py`)
+- batch로 불러와서 학습 하는 코드
+
+## 49.5 데이터셋 전처리
+- 모델에 데이터를 입력하기 전에 데이터를 특정한 형태로 가공하는 전처리가 많다.
+- 예로 이미지 회전, 좌우 반전 등등 인위적으로 늘리는 기술 -> 데이터 확장(data augmentation)
+- (`dezero/datasets.py`)
+```python
+def f(x):
+    y = x / 2.0
+    return y
+
+train_set = dezero.datasets.Spiral(trainsform=f)
+```
+- 입력 데이터의 1/2로 스케일 변환하는 전처리 예
+- noramlize 하는 코드, 순서대로 전처리를 하는 코드 -> 파일을 참조..
+---
 
 </details>
+
+<details open>
+
+<summary>step 50 : 미니배치를 뽑아주는 DataLoader</summary>
+
+---
+## 50.1 반복자란
+- 반복자(iterator)는 원소를 반복해서 꺼내준다.
+- (`steps/step50.py`)
+- (`dezero/dataloaders.py`)
+    - dataset : Dataset 인터페이스를 만족하는 인스턴스
+    - batch_size : 배치 크기
+    - shuffle : 에포크별로 데이터셋을 뒤섞을지 여부 
+
+## 50.2 DataLoader 사용하기
+- (`steps/step50.py`)
+
+## 50.3 accuracy 함수 구현하기
+- (`dezero/functions.py`)
+
+## 50.4 스파이럴 데이터셋 학습 코드
+- (`steps/step50.py`)
+
+---
+
+</details>
+
