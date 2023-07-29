@@ -1497,3 +1497,17 @@ $$L=-\log{ p [t]}$$
 ---
 
 </details>
+
+<details open>
+
+<summary>step 48 : 다중 클래스 분류</summary>
+
+---
+## 48.1 스파이럴 데이터셋
+- 스파이럴 : 나선형 혹은 소용톨이 모양이라는 뜻
+- (`steps/step48.py`, `steps/step48_plot.png`)
+- 
+---
+
+
+</details>
