@@ -1397,7 +1397,7 @@ def predict(x):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 46 : Optimizer로 수행하는 매개변수 갱신</summary>
 
@@ -1438,10 +1438,62 @@ def predict(x):
 
 <details open>
 
-<summary>step 47 : </summary>
+<summary>step 47 : 소프트맥스 함수와 교차 엔트로피 오차</summary>
 
 ---
-## 47.1 
+## 47.1 슬라이스 조작 함수
+- 다중 클래스 분류(multi-class classification) 도전
+- 사전 준비로 `get_item` 이라는 편의 함수를 하나 추가한다.
+- __구현은 부록 B__ (`dezero/functions.py`)
+```python
+import numpy as np
+import dezero.functions as F
+from dezero import Variable
+
+x = Variable(np.array([[1,2,3], [4,5,6]]))
+y = F.get_item(x, 1)
+print(y)
+```
+```
+# 결과
+variable([4 5 6])
+```
+- 다차원 배열 중 일부를 슬라이스하여 뽑아준다.
+- 역전파도 수행한다. 
+```python
+y.backward()
+print(x.grad)
+```
+```
+variable([[0. 0. 0.]
+          [1. 1. 1.]])
+```
+- 슬라이스로 인한 계산은 데이터 일부를 수정하지 않고 전달하는 것이다.
+- 따라서 그 역전파는 원래의 다차원 배열에서 데이터가 추출된 위치에 해당 기울기를 설정하고 그 외에는 0으로 설정한다. 
+
+## 47.2 소프트맥스 함수
+- (`steps/step47.py`)
+    - x의 형상은 (1, 2)
+    - 신경망 출력은 (1, 3) -> 3개의 클래스
+    - 이 신경망의 출력은 단순한 '수치'인데, 이 수치를 '확률'로 변환할 수 있다.  
+-> 소프트맥스 함수(softmax function)
+    $$p_k = \frac{\exp (y_k)}{\sum^{n}_{i=1}(\exp (y_i))}$$ 
+    - n은 클래수 수, k 번째 출력 $p_k$를 구하는 식
+    - 분자는 입력 $y_k$의 지수함수, 분모는 모든 입력의 지수함수의 총합
+- 배치(batch) 데이터에도 소프트맥스 함수를 적용할 수 있도록 확장한다.
+- (`dezero/functions.py`)
+    - x는 2차원이라고 가정한다.
+
+## 47.3 교차 엔트로피 오차
+- 선형 회귀에서는 손실 함수로 평균 제곱 오차(mse)
+- 다중 클래스 분류에서 손실 함수는 교차 엔트로피 오파(cross entropy error)
+$$L = -\sum_k(t_k \log{p_k})$$
+- $t_k$는 정답 데이터의 k 차원째 값을 나타내며, 정답이면 1 아니면 0으로 기록된다.
+- 이러한 표현 방식을 원핫 벡터(one-hot vector)라고 한다.
+    - 벡터를 구성하는 여러 원소 중 하나만 핫(hot, 값이 1이다)하다는 뜻
+- 예로 $t = (0, 0, 1)$, $p = (p_0, p_1, p_2)$ 인 경우 대입하면 $L=-\log{p_2}$ 이다. 그러므로 아래와 같이 간단하게 표현이 가능하다.
+$$L=-\log{ p [t]}$$
+
 ---
 
 </details>
