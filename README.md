@@ -2023,10 +2023,16 @@ im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
 
 ---
 ## 60.1 시계열 데이터용 데이터 로더
+- 시계열 데이터를 미니배치로 처리하려면 데이터를 뽑는 시작 위치를 배치별로 다르게 지정해야 한다.
+- (`dezero/dataloaders.py`)
+- (`steps/step60.py`)
 
 ## 60.2 LSTM 계층 구현
+> 계산식 이해가 잘... 안되는.. LSTM은 다시 찾아보자!  
+-> 밑바닥부터 시작하는 딥러닝 2 의 6장 참고
+- LSTM 에서는 은닉 상태 h 외에도 기억 셀 c를 사용한다.
+- (`dezero/layers.py`)
 
-## 
 ---
 
 
