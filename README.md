@@ -1609,7 +1609,7 @@ train_set = dezero.datasets.Spiral(trainsform=f)
 
 </details>
 
-<dateils>
+<details>
 
 <summary>step 51 : MNIST 학습</summary>
 
@@ -1641,7 +1641,7 @@ $$h(x) = \begin{cases}x & (x > 0)\\0 & (x \leq 0)\end{cases} $$
 
 </details>
 
-<dateils>
+<details>
 
 <summary>step 52 : GPU 지원</summary>
 
@@ -1710,7 +1710,7 @@ assert xp == cp
 
 </details>
 
-<dateils>
+<details>
 
 <summary>step 53 : 모델 저장 및 읽어오기</summary>
 
@@ -1748,6 +1748,115 @@ print(params_dict)
     - `save_weights` 메서드는 먼저 `self.to_cpu()`를 호출하여 데이터가 메인 메모리에 존재함을 보장한다.
     - ndarray 로 이뤄진 딕셔너리를 만들고 `np.savez_compressed` 함수를 호출하여 데이터를 외부 파일로 저장한다.
     - `load_weights`메서드는 `np.load` 함수로 데이터를 읽은 후 대응하는 키 데이터를 매개변수로 설정한다. 
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 54 : 드롭아웃과 테스트 모드</summary>
+
+---
+## 54.1 드롭아웃이란 
+- 신경망 학습에서는 과대적합이 자주 문제이고 그 원인과 대안은
+    - 훈련 데이터가 적음 -> 데이터를 확보하거나 인위적으로 늘리는 데이터 확장을 이용
+    - 모델의 표현력이 지나치게 높음 -> 가중치 감소(Weight Decay), 드롭아웃(Dropout), 배치 정규화(Batch Normalization) 등이 유효함
+- 드롭아웃을 적용하려면 학습과 테스트를 구분해서 처리해야한다.
+- 드롭아웃은 뉴런을 임의로 삭제(비활성화)하면서 학습하는 방법이다.
+- 학습 시 은닉층 뉴런을 무작위로 골라 삭제한다.
+- (`steps/step54.py`)
+- 앙상블과 dropout은 가까운 관계. 
+    - 앙상블은 독립적으로 여러 모델을 학습한 후 테스트 시 출력한 값들의 평균을 결과로 낸다.
+    - dropout은 학습 시 임의로 뉴런을 삭제하는데, 이를 매번 다른 모델을 학습하고 있다고 해석할 수 있기 때문이다.
+
+## 54.2 역 드롭아웃
+- 역 드롭아웃은 스케일 맞추기를 '학습할 때' 수행한다.
+- 앞 절에서 스케일을 맞추기 위해 '테스트할 때' scale을 곱했다. 
+- 그래서 이번에는 학습할 때 미리 1/scale 을 곱해두고 테스트 때는 아무런 동작도 하지 않는다. 
+- 역 드롭아웃도 보통의 드롭아웃과 원리는 같지만 나름의 장점이 있다.
+    - 테스트 시 아무런 처리를 하지 않기 떄문에 속도가 살짝 향상
+    - 학습할 때 dropout_ratio를 동적으로 변경할 수 있다.
+    - 예로 첫 학습때는 0.433 두번째 학습때는 0.563 등등
+
+## 54.3 테스트 모드 추가
+- 드롭아웃을 사용하려면 학습 단계인지 테스트 단계인지 구분해야 한다.
+- (`dezero/core.py`)
+    - `Config` 에 train 변수를 추가
+    - 그 다음 `test_mode` 함수를 추가. with 문과 함께 사용하면 with 블록 안에서만 `Config.train`이 False 로 전환된다.
+- (`dezero/__init__.py`) 
+    - `Config` 와 `test_mode` 추가
+
+## 54.4 드롭아웃 구현
+- (`dezero/functions.py`)
+
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 55 : CNN 메커니즘(1)</summary>
+
+---
+## 55.1 CNN 신경망의 구조
+-
+
+## 55.2 합성곱 연산
+- 
+
+## 55.3 패딩
+- 
+
+## 55.4 스트라이드
+- 
+
+## 55.5 출력 크기 계산 방법
+- 
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 56 : CNN 메커니즘(2)</summary>
+
+---
+## 56.1 3차원 텐서
+-
+
+## 56.2 블록으로 생각하기
+- 
+
+## 56.3 미니배치 처리
+- 
+
+## 56.4 풀링층
+- 
+
+---
+
+</details>
+
+
+<details open>
+
+<summary>step 57 : conv2d 함수와 pooling 함수</summary>
+
+---
+## 57.1 im2col에 의한 전개
+-
+
+## 57.2 conv2d 함수 구현
+- 
+
+## 57.3 Conv2d 계층 구현
+- 
+
+## 57.4 pooling 함수 구현
+- 
 
 ---
 

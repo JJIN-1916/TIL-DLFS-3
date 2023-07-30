@@ -22,5 +22,7 @@ else:
     from dezero.core import Parameter
     from dezero.models import Model
     from dezero.dataloaders import DataLoader
+    from dezero.core import Config
+    from dezero.core import test_mode
 
 setup_variable()
