@@ -1753,7 +1753,7 @@ print(params_dict)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 54 : 드롭아웃과 테스트 모드</summary>
 
@@ -1795,7 +1795,7 @@ print(params_dict)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 55 : CNN 메커니즘(1)</summary>
 
@@ -1838,7 +1838,7 @@ print(params_dict)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 56 : CNN 메커니즘(2)</summary>
 
@@ -1883,7 +1883,7 @@ print(params_dict)
 </details>
 
 
-<details open>
+<details>
 
 <summary>step 57 : conv2d 함수와 pooling 함수</summary>
 
@@ -1936,5 +1936,71 @@ im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
 - (책의 그림을 같이 봐야함)
 
 ---
+
+</details>
+
+<details open>
+
+<summary>step 58 : 대표적인 CNN(VGG16)</summary>
+
+---
+## 58.1 VGG16 구현
+- VGG는 2014년 ILSVRC 대회에서 준우승한 모델
+- '3 X 3 conv 64' 는 커널 크기가 3 X 3 이고 출력 채널 수가 64개라는 뜻
+- 'pool/2' 는 2 X 2 풀링
+- 'Linear 4096' 은 출력 크기가 4096 인 완전연결계층
+- VGG16의 특징
+    - 3 X 3 합성곱층 사용(패딩은 1 X 1)
+    - 합성곱층의 채널 수는 (기본적으로) 풀링하면 2배로 증가 (64 -> 128 -> 256 -> 512)
+    - 완전연결계층에서는 드롭아웃 사용
+    - 활성화 함수로는 ReLU 사용
+- (`dezero/models.py`)
+    - 입력 데이터의 채널 수는 지정하지 않는다. 순전파 시 흐르는 데이터로부터 얻는다. 
+    - fc 레이어에서도 출력크기만 정한다. 
+    - 합성곱층에서 완전연결계층으로 전환하기 위해 데이터 형상을 변환한다.
+
+## 58.2 학습된 가중치 데이터
+- VGG16은 ImageNet의 거대한 데이터셋으로 학습한다. 학습이 완료된 가중치 데이터가 공개되어있다. 
+- 학습된 가중치를 읽어오는 기능을 추가한다.
+- (`dezero/models.py`)
+
+## 58.3 학습된 VGG16 사용하기
+- (`dezero/models.py`) 정적 메서드인 preprocess 추가
+- (`steps/step58.py`)
+
+---
+
+</details>
+
+<details open>
+
+<summary>step 59 : RNN을 활용한 시계열 데이터 처리</summary>
+
+---
+## 59.1 RNN 계층 구현
+
+## 59.2 RNN 모델 구현
+
+## 59.3 '연결'을 끊어주는 메서드
+
+## 59.4 사인파 예측
+
+---
+
+
+</details>
+
+<details open>
+
+<summary>step 60 : LSTM과 데이터 로더</summary>
+
+---
+## 60.1 시계열 데이터용 데이터 로더
+
+## 60.2 LSTM 계층 구현
+
+## 
+---
+
 
 </details>
