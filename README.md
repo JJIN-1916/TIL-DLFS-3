@@ -1715,14 +1715,39 @@ assert xp == cp
 <summary>step 53 : 모델 저장 및 읽어오기</summary>
 
 ---
-## 53.1 
-- 
+## 53.1 넘파이의 save 함수와 load 함수
+- 모델이 가지는 매개변수를 외부 파일로 저장하고 다시 읽어오는 기능 구현
+- 학습 중인 모델의 '스냅샷'을 저장하거나 이미 학습된 매개변수를 읽어와서 추론만 수행할 수 있다.
+- DeZero의 매개변수는 Parameter 클래스로 구현되어 있고, Parameter의 데이터는 인스턴스 변수 data 에 ndarray 인스턴스로 보관되므로 이 인스턴스를 외부 파일로 저장하는 것
+- (`steps/step53.py`)
 
-## 53.2
-- 
+## 53.2 Layer 클래스의 매개변수를 평평하게
+- Layer 클래스는 계층의 구조를 표현한다. 계층은 Layer 안에 다른 Layer 가 들어가는 중첩 형태의 구조를 취한다.
+```python
+layer = Layer()
 
-## 53.3
-- 
+l1 = Layer()
+l1.p1 = Parameter(np.array(1))
+
+layer.l1 = l1
+layer.p2 = Parameter(np.array(2))
+layer.p3 = Parameter(np.array(3))
+```
+- 위와 같은 계층구조를 하나의 평평한 딕셔너리 로 뽑아내기위해 Layer 클래스에 _flatten_params 메서드를 추가한다.
+```python
+params_dict = {}
+lay._flatten_params(params_dict)
+print(params_dict)
+
+>>> {'p2':variable(2), 'l1/p1':variable(1), 'p3':variable(3)}
+```
+- (`dezero/layers.py`)
+
+## 53.3 Layer 클래스의 save 함수와 load 함수 
+- (`dezero/layers.py`)
+    - `save_weights` 메서드는 먼저 `self.to_cpu()`를 호출하여 데이터가 메인 메모리에 존재함을 보장한다.
+    - ndarray 로 이뤄진 딕셔너리를 만들고 `np.savez_compressed` 함수를 호출하여 데이터를 외부 파일로 저장한다.
+    - `load_weights`메서드는 `np.load` 함수로 데이터를 읽은 후 대응하는 키 데이터를 매개변수로 설정한다. 
 
 ---
 
