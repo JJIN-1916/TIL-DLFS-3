@@ -1647,19 +1647,64 @@ $$h(x) = \begin{cases}x & (x > 0)\\0 & (x \leq 0)\end{cases} $$
 
 ---
 ## 52.1 쿠파이 설치 및 사용 방법
-- 
+- 딥러닝 계산은 '행렬의 곱'이 대부분
+- 행렬의 곱은 곱셈과 덧셈으로 병렬로 계산하는게 가능하고, GPU가 훨씬 뛰어난다.
+```bash
+$ pip install cupy
+```
+- 쿠파이의 장점은 넘파이와 API가 거의 같다는 것이다.
+```python
+import cupy as cp
+
+x = cp.arange(6).reshape(2, 3)
+print(x)
+
+y = x.sum(axis=1)
+print(y)
+```
+- 쿠파이로 바꾸기 위해서는 두가지를 알아야 한다.
+```python
+import numpy as np
+import cupy as cp
+# 넘파이 -> 쿠파이
+n = np.array([1, 2, 3])
+c = cp.asarray(n)
+assert type(c) == cp.ndarray
+
+# 쿠파이 -> 넘파이
+c = cp.array([1, 2, 3])
+n = cp.asnumpy(c)
+assert type(n) == np.ndarray
+```
+- 첫번째 : 서로 전환이 가능하나 이는 최소화 해야한다. 왜냐하면, 메인 메모리에서 GPU 메모리로 전송되는 과정에서 다량의 데이터의 경우 병목이 발생하기 때문이다.
+```python
+# x가 넘파이 배열인 경우 
+x = np.array([1, 2, 3])
+xp = cp.get_array_module(x)
+assert xp == np
+
+# x가 쿠파이 배열인 경우
+x = cp.array([1, 2, 3])
+xp = cp.get_array_module(x)
+assert xp == cp
+``` 
+- 두번째 : `get_array_module(x)`은 x 배열에 적합한 모듈을 돌려준다.
+### 설치가 안되는데...? ㅎㅎㅎ 우선 코드는 작성해보자...
 
 ## 52.2 쿠다 모듈
-- 
+- (`dezero/cuda.py`)
 
 ## 52.3 Variable/Layer/DataLoader 클래스 구현
-- 
+- (`dezero/core.py`)
+- (`dezero/layers.py`)
+- (`dezero/dataloader.py`)
 
 ## 52.4 함수 수가 구현
-- 
+- (`dezero/functions.py`)
+- (`dezero/core.py`)
 
 ## 52.5 GPU로 MNIST 학습하기
-- 
+- (`steps/step52.py`)
 
 ---
 

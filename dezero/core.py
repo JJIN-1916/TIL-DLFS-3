@@ -4,6 +4,11 @@ import contextlib
 import numpy as np
 import dezero
 from memory_profiler import profile
+try:
+     import cupy
+     array_types = (np.ndarray, cupy.ndarray)
+except ImportError:
+     array_types = (np.ndarray)
 
 
 class Config:
@@ -14,7 +19,8 @@ class Variable:
     __array_priority__ = 200
     def __init__(self, data, name=None):
         if data is not None:
-             if not isinstance(data, np.ndarray):
+          #    if not isinstance(data, np.ndarray):
+             if not isinstance(data, array_types):
                   raise TypeError('{}은(는) 지원하지 않습니다.'.format(type(data)))
 
         self.data = data
@@ -30,7 +36,9 @@ class Variable:
     def backward(self, retain_grad=False, create_graph=False):
         if self.grad is None:
             # self.grad = np.ones_like(self.data)
-            self.grad = Variable(np.ones_like(self.data))
+          #   self.grad = Variable(np.ones_like(self.data))
+            xp = dezero.cuda.get_array_module(self.data)
+            self.grad = Variable(xp.ones_like(self.data))
       
         funcs = []
         seen_set = set()
@@ -105,6 +113,14 @@ class Variable:
     
     def sum(self, axis=None, keepdims=False):
          return dezero.functions.sum(self, axis, keepdims)
+    
+    def to_cpu(self):
+         if self.data is not None:
+             self.data = dezero.cuda.as_numpy(self.data)
+
+    def to_gpu(self):
+         if self.data is not None:
+             self.data = dezero.cuda.as_cupy(self.data)
 
 
 class Function:
@@ -221,9 +237,15 @@ def no_grad():
      return using_config('enable_backprop', False)
 
 
-def as_array(x):
+# def as_array(x):
+#      if np.isscalar(x):
+#           return np.array(x)
+#      return x
+
+
+def as_array(x, array_module=np):
      if np.isscalar(x):
-          return np.array(x)
+          return array_module.array(x)
      return x
 
 
@@ -233,13 +255,23 @@ def as_variable(obj):
      return Variable(obj)
 
 
+# def add(x0, x1):
+#      x1 = as_array(x1)
+#      return Add()(x0, x1)
+
+
 def add(x0, x1):
-     x1 = as_array(x1)
+     x1 = as_array(x1, dezero.cuda.get_array_module(x0.data))
      return Add()(x0, x1)
 
 
+# def mul(x0, x1):
+#      x1 = as_array(x1)
+#      return Mul()(x0, x1)
+
+
 def mul(x0, x1):
-     x1 = as_array(x1)
+     x1 = as_array(x1, dezero.cuda.get_array_module(x0.data))
      return Mul()(x0, x1)
 
 
@@ -247,23 +279,43 @@ def neg(x):
      return Neg()(x)
 
 
+# def sub(x0, x1):
+#      x1 = as_array(x1)
+#      return Sub()(x0, x1)
+
+
 def sub(x0, x1):
-     x1 = as_array(x1)
+     x1 = as_array(x1, dezero.cuda.get_array_module(x0.data))
      return Sub()(x0, x1)
 
 
+# def rsub(x0, x1):
+#      x1 = as_array(x1)
+#      return Sub()(x1, x0) # x0와 x1의 순서를 바꾼다.
+
+
 def rsub(x0, x1):
-     x1 = as_array(x1)
+     x1 = as_array(x1, dezero.cuda.get_array_module(x0.data))
      return Sub()(x1, x0) # x0와 x1의 순서를 바꾼다.
 
 
+# def div(x0, x1):
+#      x1 = as_array(x1)
+#      return Div()(x0, x1)
+
+
 def div(x0, x1):
-     x1 = as_array(x1)
+     x1 = as_array(x1, dezero.cuda.get_array_module(x0.data))
      return Div()(x0, x1)
 
 
+# def rdiv(x0, x1):
+#      x1 = as_array(x1)
+#      return Div()(x1, x0) # x0와 x1의 순서를 바꾼다.
+
+
 def rdiv(x0, x1):
-     x1 = as_array(x1)
+     x1 = as_array(x1, dezero.cuda.get_array_module(x0.data))
      return Div()(x1, x0) # x0와 x1의 순서를 바꾼다.
 
 

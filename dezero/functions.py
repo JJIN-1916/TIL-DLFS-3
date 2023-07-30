@@ -3,10 +3,13 @@ from dezero.core import Function
 from dezero.core import Variable
 from dezero.core import as_variable, as_array
 from dezero import utils
+from dezero import cuda
 
 class Sin(Function):
     def forward(self, x):
-        y = np.sin(x)
+        # y = np.sin(x)
+        xp = cuda.get_array_module(x)
+        y = xp.sin(x)
         return y
     
     def backward(self, gy):
