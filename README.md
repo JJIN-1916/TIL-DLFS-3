@@ -1965,9 +1965,11 @@ im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
 - (`dezero/models.py`)
 
 ## 58.3 학습된 VGG16 사용하기
-- (`dezero/models.py`) 정적 메서드인 preprocess 추가
 - (`steps/step58.py`)
-
+- (`dezero/models.py`) 정적 메서드인 preprocess 추가
+    - preprocess는 정적 메서드이므로 인스턴스가 아닌 클래스에서 호출해야 한다.
+    - 학습된 가중치 데이터를 사용하면 새로운 데이터를 추론할 떄 학습했을 때와 똑같은 전처리를 해줘야 한다. 모델에 입력되는 형태가 달라지기 떄문에 올바른 인식을 못한다.
+- (`dezero/datasets.py`) ImageNet 클래스 추가
 ---
 
 </details>
@@ -1978,13 +1980,38 @@ im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
 
 ---
 ## 59.1 RNN 계층 구현
+- 지금까지는 feed forward 구조의 신경망을 살펴봤다.
+- 신호가 한 방향으로만 흘러가기 떄문에 입력 신호만으로 출력을 결정한다.
+- 순환 신경망(Recurrent Neural Network, RNN)은 순환(Loop) 구조를 갖는다.
+- 순환 구조여서 출력은 자신에게 피드백되기 떄문에 '상태'를 가지게 된다.
+- RNN 수식을 이해해보자
+    - 시계열(time serise) 데이터인 입력 $x_t$ 가 있고, 은닉 상태 $h_t$ 를 출력하는 RNN을 생각해보자
+    $$h_t = \tanh(h_{t-1}W_h + x_tW_x + b)$$
+    - 2개의 가중치 
+        - $W_x$ : 입력 x를 은닉 상태 h로 변환하기 위한 가중치
+        - $W_h$ : 출력을 다음 시각의 출력으로 변환하기 위한 가중치 
+- (`dezero/layers.py`)
+- 두번째 입력 데이터가 처리된 후 그래프가 '성장'하여 더 큰 계산 그래프가 만들어진다.
+- '성장'을 가능하게 하는 매개체가 RNN의 은닉상태다.
 
 ## 59.2 RNN 모델 구현
+- (`steps/step59.py`)
+- 중요한 역전파 구현. (책의 이미지를 같이 봐야함. 그림 59-4)두번째 입력 데이터가 들어왔을 때 역전파를 수행함
+- 입력 데이터로 구성된 계산 그래프에서 역전파를 '시간을 거슬러 역전파한다'는 의미로 BPTT(Backpropagataion Through Time)
+    - RNN은 입력 데이터가 나열되는 패턴을 학습할 수 있다. 이떄의 나열되는 '순서'는 시계열의 '시간'에 해당한다. BPTT에 time이 들어가는 이유다.
+- 입력 데이터가 몇개가 되든 계산 그래프는 계속 길게 뻗어나간다. 하지만 역전파를 잘하려면 적당한 길이에서 '끊어줘야'한다. -> Truncated BPTT(truncate 는 '길이를 줄이다', '절단하다'라는 뜻)
+- Truncated BPTT 를 수행할 떄는 은닉상태가 유지된다는 점에 주의
+- 이전의 은닉 상태에서 시작해서 그 상태 변수에서 계산의 '연결'을 끊어줘야 한다...?
+- 그러면 이전 학습에서 사용한 계산 그래프로까지 기울기가 흐르지 못하게 된다. 이게 Truncated BPTT 이다.
 
 ## 59.3 '연결'을 끊어주는 메서드
+- (`dezero/core.py`)
+    - `unchain_backward`메서드는 호출된 변수에서 시작하여 계산 그래프를 거슬러 올라가며 마주치는 모든 변수의 unchain 메서드를 호출한다.
 
 ## 59.4 사인파 예측
-
+- (`dezero/datasets.py`) SinCurve 클래스 추가
+- (`dezero/optimizers.py`) Adam 클래스 추가
+- (`steps/step59.py`)
 ---
 
 

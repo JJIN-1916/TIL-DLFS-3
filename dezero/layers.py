@@ -147,3 +147,25 @@ class Conv2d(Layer):
 
         y = conv2d(x, self.W, self.b, self.stride, self.pad)
         return y
+    
+
+class RNN(Layer):
+    def __init__(self, hidden_size, in_size=None):
+        super().__init__()
+        # 입력 x에서 은닉상태 h로 변환하는 완전연결계층
+        self.x2h = Linear(hidden_size, in_size=in_size)
+        # 이전 은닉상태에서 다음 은닉상태로 변환하는 완전연결계층
+        self.h2h = Linear(hidden_size, in_size=in_size, nobias=True)
+        self.h = None # 은닉상태 유무
+
+    def reset_state(self):
+        self.h = None
+
+    def forward(self, x):
+        if self.h is None:
+            h_new = F.tanh(self.x2h(x))
+        else:
+            h_new = F.tanh(self.x2h(x) + self.h2h(self.h))
+        
+        self.h = h_new
+        return h_new
