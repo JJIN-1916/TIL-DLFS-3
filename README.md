@@ -1436,7 +1436,7 @@ def predict(x):
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 47 : 소프트맥스 함수와 교차 엔트로피 오차</summary>
 
@@ -1498,7 +1498,7 @@ $$L=-\log{ p [t]}$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 48 : 다중 클래스 분류</summary>
 
@@ -1518,7 +1518,7 @@ $$L=-\log{ p [t]}$$
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 49 : Dataset 클래스와 전처리</summary>
 
@@ -1583,7 +1583,7 @@ train_set = dezero.datasets.Spiral(trainsform=f)
 
 </details>
 
-<details open>
+<details>
 
 <summary>step 50 : 미니배치를 뽑아주는 DataLoader</summary>
 
@@ -1609,3 +1609,76 @@ train_set = dezero.datasets.Spiral(trainsform=f)
 
 </details>
 
+<dateils>
+
+<summary>step 51 : MNIST 학습</summary>
+
+---
+## 51.1 MNIST 데이터셋
+- MNIST 데이터셋 가져오고 살펴보기
+- (`dezero/datasets.py`) -> `MNIST` 클래스 가져옴..
+- (`dezero/transform.py`) -> 전부 가져옴..
+- (`dezero/utils.py`) -> `download function` 메서드들 가져옴..
+    - **다시 자세히 살펴봐야함..!!**
+- (`steps/step51.py`)
+
+## 51.2 MNIST 학습하기
+- (`steps/step51.py`)
+
+## 51.3 모델 개선하기
+- 현재 구현된 MLP의 활성화 함수는 시그모이드(sigmoid)
+- 역사가 깊은 활성화 함수지만 최근에는 ReLU(rectified linear uniut)가 대세
+$$h(x) = \begin{cases}x & (x > 0)\\0 & (x \leq 0)\end{cases} $$
+- (`dezero/functions.py`)
+    - `forward` 에서 `np.maximum(x, 0.0)` 에 의해 x의 원소와 0.0 중 큰 쪽을 반환한다.
+    - `backward` 에서 0 이하일 경우 기울기를 0으로 설정해야하기에 mask 를 이용해 출력에서 전해지는 기울기를 통과시킬지 정한다. 
+- (`steps/step51.py`)
+    - 3층 신경망 사용
+    - 활성화 함수 ReLU 사용
+- (칼럼 내용은... 추후에 정리해서 추가하자...)
+
+---
+
+</details>
+
+<dateils>
+
+<summary>step 52 : GPU 지원</summary>
+
+---
+## 52.1 쿠파이 설치 및 사용 방법
+- 
+
+## 52.2 쿠다 모듈
+- 
+
+## 52.3 Variable/Layer/DataLoader 클래스 구현
+- 
+
+## 52.4 함수 수가 구현
+- 
+
+## 52.5 GPU로 MNIST 학습하기
+- 
+
+---
+
+</details>
+
+<dateils>
+
+<summary>step 53 : 모델 저장 및 읽어오기</summary>
+
+---
+## 53.1 
+- 
+
+## 53.2
+- 
+
+## 53.3
+- 
+
+---
+
+</details>
