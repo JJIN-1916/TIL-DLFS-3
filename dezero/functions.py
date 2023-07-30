@@ -73,17 +73,38 @@ def reshape(x, shape):
     
 
 class Transpose(Function):
+    def __init__(self, axes=None):
+        self.axes = axes
+
     def forward(self, x):
-        y = np.transpose(x)
+        y = x.transpose(self.axes)
         return y
-    
+
     def backward(self, gy):
-        gx = transpose(gy)
-        return gx
+        if self.axes is None:
+            return transpose(gy)
+
+        axes_len = len(self.axes)
+        inv_axes = tuple(np.argsort([ax % axes_len for ax in self.axes]))
+        return transpose(gy, inv_axes)
+
+
+def transpose(x, axes=None):
+    return Transpose(axes)(x)
+
+
+# class Transpose(Function):
+#     def forward(self, x):
+#         y = np.transpose(x)
+#         return y
+    
+#     def backward(self, gy):
+#         gx = transpose(gy)
+#         return gx
     
 
-def transpose(x):
-    return Transpose()(x)
+# def transpose(x):
+#     return Transpose()(x)
 
 
 class Sum(Function):
@@ -270,6 +291,25 @@ def linear_simple(x, W, b=None):
     y = t + b
     t.data = None # t의 데이터 삭제
     return y
+
+
+class Linear(Function):
+    def forward(self, x, W, b):
+        y = x.dot(W)
+        if b is not None:
+            y += b
+        return y
+
+    def backward(self, gy):
+        x, W, b = self.inputs
+        gb = None if b.data is None else sum_to(gy, b.shape)
+        gx = matmul(gy, W.T)
+        gW = matmul(x.T, gy)
+        return gx, gW, gb
+
+
+def linear(x, W, b=None):
+    return Linear()(x, W, b)
 
 
 def sigmoid_simple(x):

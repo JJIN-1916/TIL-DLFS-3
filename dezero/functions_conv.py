@@ -1,7 +1,7 @@
 import numpy as np
 from dezero import cuda
 from dezero.core import Function, as_variable
-from dezero.utils import pair, get_conv_outsize, get_deconv_outsize
+from dezero.utils import pair, get_conv_outsize# , get_deconv_outsize
 from dezero.functions import linear, broadcast_to
 
 
@@ -22,6 +22,7 @@ def conv2d_simple(x, W, b=None, stride=1, pad=0):
     col = im2col(x, (KH, KW), stride, pad, to_matrix=True)
     Weight = Weight.reshape(OC, -1).transpose()
     t = linear(col, Weight, b)
+    # t = linear_simple(col, Weight, b)
     y = t.reshape(N, OH, OW, OC).transpose(0, 3, 1, 2)
     # N, OH, OW, OC -> N, OC, OH, OW
     return y

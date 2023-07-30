@@ -26,7 +26,7 @@ else:
     from dezero.core import test_mode
 
     import dezero.functions
-    # import dezero.functions_conv
+    import dezero.functions_conv
     import dezero.optimizers
     import dezero.dataloaders
     import dezero.datasets

@@ -1908,8 +1908,12 @@ im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
 |stride|int 또는 (int, int)|스트라이드|
 |pad|int 또는 (int, int)|패딩|
 |to_matrix|bool|행렬로 형상 변환 여부|
-- (`dezero/functions_conv.py`) -> 가져옴... 함수가 안불러와지네..??
+- (`dezero/functions_conv.py`) -> 가져옴...  
+> ~~함수가 안불러와지네..??~~  
+-> 내 실수.. 확장자가 없었음... `dezero/functions_conv`
 - reshape의 마지막 인수를 -1 로 지정하면 그 앞의 인수들로 정의한 다차원 배열에 전체 원소들을 적절히 분배해준다.
+> TypeError: transpose() takes 1 positional argument but 5 were given  
+-> 해결하려면 `dezero/core.py`, `dezero/functions.py`의 transpose 관련 함수를 가져와야함!!!
 
 ## 57.3 Conv2d 계층 구현
 - 계층으로서의 Conv2d 구현
@@ -1930,7 +1934,6 @@ im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
 - 풀링은 채널 방향과는 독립적이라는 점이 합성곱층과 다르다.
 - 채널마다 독립적으로 전개한다.
 - (책의 그림을 같이 봐야함)
-- 
 
 ---
 
