@@ -25,4 +25,14 @@ else:
     from dezero.core import Config
     from dezero.core import test_mode
 
+    import dezero.functions
+    # import dezero.functions_conv
+    import dezero.optimizers
+    import dezero.dataloaders
+    import dezero.datasets
+    import dezero.layers
+    import dezero.utils
+    import dezero.cuda
+    import dezero.transform
+
 setup_variable()

@@ -1889,15 +1889,47 @@ print(params_dict)
 
 ---
 ## 57.1 im2col에 의한 전개
--
+- 합성곱 연산을 곧이곧대로 구현하면 for 문이 겹겹이 중첩된 코드가 될 것이다.
+- 속도도 느려진다. 
+- for 문을 사용하지 않고 im2col 이라는 편의 함수를 사용하여 간단히 구현하고자 한다.
+- im2col은 데이터를 한줄로 '전개'하는 함수로, 합성곱 연산 중 커널 계산에 편리하도록 입력데이터를 펼쳐준다.
+- 커널을 적용할 영역을 꺼낸 다음 한줄로 형상을 바꿔 최종적으로는 '행렬(2차원 텐서)'로 변환한다. 
 
 ## 57.2 conv2d 함수 구현
-- 
+- DeZero 의 im2col 함수를 블랙박스 처럼 사용한다고 가정한다.(상세구현은 신경쓰지 않는다.)
+- DeZero의 im2col 함수의 인터페이스는 다음과 같다.
+```
+im2col(x, kernel_size, stride=1, pad=0, to_matrix=True)
+```
+|인수| 데이터 타입| 설명|
+|:--:|:--:|:--:|
+|x|Variable 또는 ndarrya|입력데이터|
+|kernel_size|int 또는 (int, int)|커널 크기|
+|stride|int 또는 (int, int)|스트라이드|
+|pad|int 또는 (int, int)|패딩|
+|to_matrix|bool|행렬로 형상 변환 여부|
+- (`dezero/functions_conv.py`) -> 가져옴... 함수가 안불러와지네..??
+- reshape의 마지막 인수를 -1 로 지정하면 그 앞의 인수들로 정의한 다차원 배열에 전체 원소들을 적절히 분배해준다.
 
 ## 57.3 Conv2d 계층 구현
-- 
+- 계층으로서의 Conv2d 구현
+- (`dezero/layers.py`)  
+
+|인수| 데이터 타입| 설명|
+|:--:|:--:|:--:|
+|out_channels|int|출력 데이터의 채널 수|
+|kernel_size|int 또는 (int, int)|커널 크기|
+|stride|int 또는 (int, int)|스트라이드|
+|pad|int 또는 (int, int)|패딩|
+|nobias|bool|편향 사용 여부|
+|dtype|numpy.dtype|초기화할 가중치의 데이터 타입|
+|in_channels|int 또는 None|입력 데이터의 채널 수|
 
 ## 57.4 pooling 함수 구현
+- im2col을 사용하여 입력 데이터를 전개
+- 풀링은 채널 방향과는 독립적이라는 점이 합성곱층과 다르다.
+- 채널마다 독립적으로 전개한다.
+- (책의 그림을 같이 봐야함)
 - 
 
 ---
